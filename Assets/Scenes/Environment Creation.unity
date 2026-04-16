@@ -461,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21143e6350b6be04dbebd5963b2f3ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainMaster
-  targetDensity: 0.01
+  targetDensity: 0.05
   bailOutLimit: 500
   x_lim: 50
   y_lim: 50
