@@ -22,7 +22,7 @@ public class InputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Calls Move and Rotate functions, even if no input is detected
+        // Calls Move function, even if no input is detected
         Vector2 movementVector = moveAction.ReadValue<Vector2>();
         playerController.Move(movementVector);
 

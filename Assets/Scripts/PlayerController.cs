@@ -3,7 +3,9 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
+    [SerializeField] public Transform cameraTransform;
     private float rotationY;
+    private float rotationX;
     private float verticalVelocity;
 
     [SerializeField] public float movementSpeed = 10f, rotationSpeed = 5f, jumpForce = 10f, gravity = -30f;
@@ -26,8 +28,7 @@ public class PlayerController : MonoBehaviour
 
     public void Rotate(Vector2 rotationVector)
     {
-        rotationY += rotationVector.x * rotationSpeed * Time.deltaTime;
-        transform.localRotation = Quaternion.Euler(0, rotationY, 0);
+        transform.rotation.y = cameraTransform.rotation.y;
     }
 
     public void Jump()
