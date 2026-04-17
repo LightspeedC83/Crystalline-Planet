@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
 
     public void Rotate(Vector2 rotationVector)
     {
-        transform.rotation.y = cameraTransform.rotation.y;
+        transform.Rotate(0, cameraTransform.rotation.y - transform.rotation.y, 0);
     }
 
     public void Jump()
