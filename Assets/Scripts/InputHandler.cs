@@ -4,28 +4,31 @@ using UnityEngine.InputSystem;
 public class InputHandler : MonoBehaviour
 {
     [SerializeField] public PlayerController playerController;
+    [SerializeField] private PlayerInput playerInput;
 
-    private InputAction moveAction, lookAction, jumpAction;
+    private InputAction moveAction, lookAction, jumpAction, pauseAction;
+    private bool isPaused;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        moveAction = InputSystem.actions.FindAction("Move");
-        lookAction = InputSystem.actions.FindAction("Look");
-        jumpAction = InputSystem.actions.FindAction("Jump");
+        lookAction = playerInput.actions.FindAction("Look");
+        pauseAction = playerInput.actions.FindAction("Pause");
 
-        jumpAction.performed += OnJumpPerformed;
+        pauseAction.performed += OnPausePerformed;
 
         Cursor.lockState = CursorLockMode.Locked;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Calls Move function, even if no input is detected
-        Vector2 movementVector = moveAction.ReadValue<Vector2>();
-        playerController.Move(movementVector);
+        playerController.updatePlayerState();
+        playerController.updatePlayerPosition();
 
+
+        // This is independent of the state machine, as look direction shouldn't affect state
         Vector2 lookVector = lookAction.ReadValue<Vector2>();
         playerController.Rotate(lookVector);
     }
@@ -33,5 +36,21 @@ public class InputHandler : MonoBehaviour
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
         playerController.Jump();
+    }
+
+    private void OnPausePerformed(InputAction.CallbackContext context)
+    {
+        Pause(isPaused);
+    }
+
+    private void Pause(bool pause)
+    {
+        if (pause)
+        {
+            // TODO: pause the game, activate UI action map
+        } else
+        {
+            // TODO: unpause the game, deactivate UI action map
+        }
     }
 }

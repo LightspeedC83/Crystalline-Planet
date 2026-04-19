@@ -1,19 +1,37 @@
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController characterController;
-    [SerializeField] public Transform cameraTransform;
+    public CharacterController characterController;
+    private PlayerInput playerInput;
+    [SerializeField] public CinemachinePanTilt cineCamera;
     private float rotationY;
     private float rotationX;
     private float verticalVelocity;
 
-    [SerializeField] public float movementSpeed = 10f, rotationSpeed = 5f, jumpForce = 10f, gravity = -30f;
+    public StateMachine movementSM;
+    public StandingState standing;
+    public MovingState moving;
+    public LandingState landing;
+    public JumpingState jumping;
+
+    [SerializeField] public float movementSpeed = 11f, jumpForce = 10f, gravity = -30f;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerInput = GetComponent<PlayerInput>();
+
+        movementSM = new StateMachine();
+        standing = new StandingState(this, movementSM);
+        moving = new MovingState(this, movementSM);
+        landing = new LandingState(this, movementSM);
+        jumping = new JumpingState(this, movementSM);
+
+        movementSM.Initialize(standing);
     }
 
     public void Move(Vector2 movementVector)
@@ -28,7 +46,10 @@ public class PlayerController : MonoBehaviour
 
     public void Rotate(Vector2 rotationVector)
     {
-        transform.Rotate(0, cameraTransform.rotation.y - transform.rotation.y, 0);
+        // Sets the player y axis rotation equal to the camera rotation.
+        float panAngle = cineCamera.PanAxis.Value;
+        Quaternion panRotation = Quaternion.Euler(0, panAngle, 0);
+        transform.localRotation = panRotation;
     }
 
     public void Jump()
@@ -38,4 +59,24 @@ public class PlayerController : MonoBehaviour
             verticalVelocity = jumpForce;
         }
     }
+
+    public void updatePlayerState()
+    {
+        //should call current state's HandleInput
+    }
+
+    public void updatePlayerPosition()
+    {
+        // Calls Move function, even if no input is detected.
+        //Vector2 movementVector = moveAction.ReadValue<Vector2>();
+        //Move(movementVector);
+
+        // should call current state's PhysicsUpdate
+    }
+
+    public PlayerInput GetPlayerInput()
+    {
+        return playerInput;
+    }
+
 }
