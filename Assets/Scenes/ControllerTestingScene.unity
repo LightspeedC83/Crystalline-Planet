@@ -742,6 +742,7 @@ MonoBehaviour:
   movementSpeed: 10
   jumpForce: 10
   gravity: -30
+  airControl: 0.75
 --- !u!114 &1036772363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,7 +770,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: df70fa95-8a34-4494-b137-73ab6b9c7d37
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!95 &1036772364
