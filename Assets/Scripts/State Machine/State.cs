@@ -6,9 +6,7 @@ public class State
     public PlayerController playerController;
     public StateMachine stateMachine;
 
-    protected Vector3 gravity;
-    protected Vector3 velocity;
-    protected Vector2 input;
+    protected Vector2 moveInput;
 
     public InputAction moveAction;
     public InputAction lookAction;

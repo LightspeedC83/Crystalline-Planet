@@ -7,9 +7,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController characterController;
     private PlayerInput playerInput;
     [SerializeField] public CinemachinePanTilt cineCamera;
-    private float rotationY;
-    private float rotationX;
     private float verticalVelocity;
+
 
     public StateMachine movementSM;
     public StandingState standing;
@@ -17,8 +16,11 @@ public class PlayerController : MonoBehaviour
     public LandingState landing;
     public JumpingState jumping;
 
+    [Header("Controller Parameters")]
     [SerializeField] public float movementSpeed = 11f, jumpForce = 10f, gravity = -30f;
-    
+    [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.5f;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,10 +36,13 @@ public class PlayerController : MonoBehaviour
         movementSM.Initialize(standing);
     }
 
+    /** Updates velocity according to input and gravity
+     * @param movementVector The movement input Vector2.
+     */
     public void Move(Vector2 movementVector)
     {
         Vector3 move = transform.forward * movementVector.y + transform.right * movementVector.x;
-        move = move * movementSpeed * Time.deltaTime;
+        move *= movementSpeed * Time.deltaTime;
         characterController.Move(move);
 
         verticalVelocity += gravity * Time.deltaTime;
@@ -54,24 +59,25 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-        if (characterController.isGrounded)
-        {
             verticalVelocity = jumpForce;
-        }
     }
 
     public void updatePlayerState()
     {
+        State activeState = movementSM.GetActiveState();
         //should call current state's HandleInput
+        activeState.HandleInput();
+        activeState.LogicUpdate();
     }
 
     public void updatePlayerPosition()
     {
+        State activeState = movementSM.GetActiveState();
         // Calls Move function, even if no input is detected.
         //Vector2 movementVector = moveAction.ReadValue<Vector2>();
         //Move(movementVector);
 
-        // should call current state's PhysicsUpdate
+        activeState.PhysicsUpdate();
     }
 
     public PlayerInput GetPlayerInput()

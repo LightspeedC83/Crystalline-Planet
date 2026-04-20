@@ -737,6 +737,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ab5165d62a533d4cb20075124c5ab4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  characterController: {fileID: 0}
   cineCamera: {fileID: 248562868}
   movementSpeed: 10
   jumpForce: 10
@@ -1093,6 +1094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InputHandler
   playerController: {fileID: 1036772362}
+  playerInput: {fileID: 1036772363}
 --- !u!4 &1692340597
 Transform:
   m_ObjectHideFlags: 0

@@ -40,17 +40,20 @@ public class InputHandler : MonoBehaviour
 
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
-        Pause(isPaused);
+        Pause();
     }
 
-    private void Pause(bool pause)
+    /** Pauses or unpauses the game based on its current state
+     */
+    private void Pause()
     {
-        if (pause)
+        if (isPaused)
         {
-            // TODO: pause the game, activate UI action map
-        } else
+            // TODO: unpause the game, deactivate UI action map, and freeze cursor
+        }
+        else
         {
-            // TODO: unpause the game, deactivate UI action map
+            // TODO: pause the game, activate UI action map, and unfreeze cursor
         }
     }
 }
