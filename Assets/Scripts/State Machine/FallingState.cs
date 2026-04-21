@@ -3,6 +3,7 @@ using UnityEngine;
 public class FallingState : State
 {
     private bool grounded;
+    private float coyoteTimer;
 
     //private Vector3 airVelocity;
 
@@ -18,6 +19,7 @@ public class FallingState : State
 
         grounded = false;
         playerController.verticalVelocity = 0;
+        coyoteTimer = 0;
     }
 
     public override void HandleInput()
@@ -34,6 +36,10 @@ public class FallingState : State
         if (grounded)
         {
             stateMachine.ChangeState(playerController.landing);
+        }
+        if (jumpKeyDown && coyoteTimer <= playerController.coyoteTime)
+        {
+            stateMachine.ChangeState(playerController.jumping);
         }
     }
 
@@ -58,8 +64,8 @@ public class FallingState : State
 
         playerController.characterController.Move(playerController.characterVelocity * playerController.airControl);
 
-        //update grounded state
+        //update grounded state and coyote Timer
         grounded = playerController.characterController.isGrounded;
-
+        coyoteTimer += Time.deltaTime;
     }
 }

@@ -28,8 +28,7 @@ public class PlayerController : MonoBehaviour
 
     private State activeState;
 
-    [Header("Controller Parameters")]
-    [SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f, miningDestroyTime = 1f, miningRange = 5f;
+    [Header("Controller Parameters")][SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f, coyoteTime = 0.1f, miningDestroyTime = 1f, miningRange = 5f;
     [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
 
 

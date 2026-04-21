@@ -1464,6 +1464,10 @@ PrefabInstance:
       propertyPath: cineCamera
       value: 
       objectReference: {fileID: 248562868}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: coyoteTime
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5561145243420852368, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
