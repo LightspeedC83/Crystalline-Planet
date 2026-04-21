@@ -11,7 +11,7 @@ public class TerrainMaster : MonoBehaviour
     public float scaleFactor;
     public GameObject crystallineComponent;
     public int finalNumberMapSegements;
-    public float SegmentRadiusFudgeFactor = 0.6f;
+    public float segmentRadiusFudgeFactor = 0.6f;
 
     [System.NonSerialized] public int numMapSegments = 0;
     [System.NonSerialized] List<GameObject> mapSegments = new List<GameObject>();
@@ -27,7 +27,7 @@ public class TerrainMaster : MonoBehaviour
         // for (int i=1; i<finalNumberMapSegements; i++){
         //     GameObject newestSegment = createMapSegment();
         //     GameObject previousSegment = mapSegments[i-1];
-        //     Vector3 toNewSegmentVector = new Vector3(2*scaleFactor*SegmentRadiusFudgeFactor*effectiveSegmentRadius, 0f, 0f);
+        //     Vector3 toNewSegmentVector = new Vector3(2*scaleFactor*segmentRadiusFudgeFactor*effectiveSegmentRadius, 0f, 0f);
         //     newestSegment.transform.position = previousSegment.transform.position + toNewSegmentVector;
         // }
         
@@ -49,7 +49,7 @@ public class TerrainMaster : MonoBehaviour
             Vector3 targetPos = new Vector3((float)locations[i].Item1, (float)locations[i].Item2, (float)locations[i].Item3);
             targetPos = targetPos - new Vector3(master_x_lim/2f, master_y_lim/2f, master_z_lim/2f); // here we have to make the center of the DLA object be (0,0,0)
             GameObject nextMapSegment = createMapSegment();
-            nextMapSegment.transform.position = targetPos*scaleFactor*effectiveSegmentRadius;
+            nextMapSegment.transform.position = targetPos*scaleFactor*effectiveSegmentRadius*segmentRadiusFudgeFactor;
             nextMapSegment.transform.rotation = Quaternion.identity;
 
             nextMapSegment.transform.localScale = nextMapSegment.transform.localScale*scaleFactor;

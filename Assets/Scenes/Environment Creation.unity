@@ -469,7 +469,7 @@ MonoBehaviour:
   scaleFactor: 1
   crystallineComponent: {fileID: 1439441940}
   finalNumberMapSegements: 5
-  SegmentRadiusFudgeFactor: 0.6
+  segmentRadiusFudgeFactor: 1.25
 --- !u!4 &1065789890
 Transform:
   m_ObjectHideFlags: 0
