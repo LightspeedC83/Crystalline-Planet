@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "Crystalline-Planet.slnx"
+    "dotnet.defaultSolution": "Crystalline Planet.slnx"
 }
