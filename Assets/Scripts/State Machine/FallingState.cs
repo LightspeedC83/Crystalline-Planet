@@ -17,6 +17,7 @@ public class FallingState : State
         base.Enter();
 
         grounded = false;
+        playerController.verticalVelocity = 0;
     }
 
     public override void HandleInput()
