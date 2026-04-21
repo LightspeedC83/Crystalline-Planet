@@ -3,15 +3,22 @@ using System.Collections.Generic;
 
 public class TerrainMaster : MonoBehaviour
 {
+    [Header("DLA Settings")]
     public float targetDensity;
     public int bailOutLimit; 
     public int x_lim;
     public int y_lim; 
     public int z_lim;
+
+    [Header("Map Settings")]
     public float scaleFactor;
     public GameObject crystallineComponent;
     public int finalNumberMapSegements;
     public float segmentRadiusFudgeFactor = 0.6f;
+
+    [Header("Ore Settings")]
+    public GameObject oreObject;
+    public float oreSpawnProbability;
 
     [System.NonSerialized] public int numMapSegments = 0;
     [System.NonSerialized] List<GameObject> mapSegments = new List<GameObject>();
@@ -22,14 +29,6 @@ public class TerrainMaster : MonoBehaviour
     void Start()
     {
         effectiveSegmentRadius = (x_lim + y_lim + z_lim)/3/2;
-
-        // createMapSegment();
-        // for (int i=1; i<finalNumberMapSegements; i++){
-        //     GameObject newestSegment = createMapSegment();
-        //     GameObject previousSegment = mapSegments[i-1];
-        //     Vector3 toNewSegmentVector = new Vector3(2*scaleFactor*segmentRadiusFudgeFactor*effectiveSegmentRadius, 0f, 0f);
-        //     newestSegment.transform.position = previousSegment.transform.position + toNewSegmentVector;
-        // }
         
         GameObject masterMapParent = new GameObject("MasterMapParent"); //empty parent
 
@@ -78,11 +77,19 @@ public class TerrainMaster : MonoBehaviour
             Vector3 targetPos = new Vector3((float)locations[i].Item1, (float)locations[i].Item2, (float)locations[i].Item3);
             targetPos = targetPos - new Vector3(x_lim/2, y_lim/2, z_lim/2); // here we have to make the center of the DLA object be (0,0,0)
 
-            GameObject newComponent = Instantiate(crystallineComponent, segmentParent.transform);
+            GameObject newComponent;
+            if (Random.value >= oreSpawnProbability){ //normal block
+                newComponent = Instantiate(crystallineComponent, segmentParent.transform);
+            }else{ //ore block
+                newComponent = Instantiate(oreObject, segmentParent.transform);
+            }
+            
             newComponent.transform.localPosition = targetPos * scaleFactor;
             newComponent.transform.localRotation = Quaternion.identity;
             newComponent.transform.localScale = Vector3.one * scaleFactor;
             newComponent.SetActive(true);
+
+            //now we determine if we are going to spawn an ore on 
         }
 
         mapSegments.Add(segmentParent);
