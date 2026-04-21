@@ -6,7 +6,7 @@ public class InputHandler : MonoBehaviour
     [SerializeField] public PlayerController playerController;
     [SerializeField] private PlayerInput playerInput;
 
-    private InputAction moveAction, lookAction, jumpAction, pauseAction;
+    private InputAction moveAction, lookAction, jumpAction, pauseAction, mineAction;
     private bool isPaused;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,8 +14,11 @@ public class InputHandler : MonoBehaviour
     {
         lookAction = playerInput.actions.FindAction("Look");
         pauseAction = playerInput.actions.FindAction("Pause");
+        mineAction = playerInput.actions.FindAction("Mine");
 
         pauseAction.performed += OnPausePerformed;
+        mineAction.performed += playerController.Mine;
+        mineAction.canceled += playerController.StopMining;
 
         Cursor.lockState = CursorLockMode.Locked;
         

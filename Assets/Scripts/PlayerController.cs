@@ -7,8 +7,16 @@ public class PlayerController : MonoBehaviour
     public CharacterController characterController;
     private PlayerInput playerInput;
     [SerializeField] public CinemachinePanTilt cineCamera;
+    [SerializeField] public GameObject miningRay;
     public float verticalVelocity;
     public Vector3 characterVelocity;
+
+    //Mining variables
+    private bool mineKeyDown;
+    private bool mining;
+    private float mineTimer;
+    public int breakableLayerMask = 00001000;
+    private RaycastHit hitInfo;
 
 
     public StateMachine movementSM;
@@ -21,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private State activeState;
 
     [Header("Controller Parameters")]
-    [SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f;
+    [SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f, miningDestroyTime = 1f, miningRange = 5f;
     [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
 
 
@@ -31,12 +39,17 @@ public class PlayerController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
 
+        mineKeyDown = false;
+        mineTimer = 0f;
+        mining = false;
+
         movementSM = new StateMachine();
         standing = new StandingState(this, movementSM);
         moving = new MovingState(this, movementSM);
         landing = new LandingState(this, movementSM);
         jumping = new JumpingState(this, movementSM);
         falling = new FallingState(this, movementSM);
+        miningRay.SetActive(false);
 
         activeState = standing;
         movementSM.Initialize(standing);
@@ -98,6 +111,8 @@ public class PlayerController : MonoBehaviour
     {
         activeState = movementSM.GetActiveState();
         activeState.PhysicsUpdate();
+        UpdateMiningLogic();
+        
     }
 
     public PlayerInput GetPlayerInput()
@@ -105,4 +120,50 @@ public class PlayerController : MonoBehaviour
         return playerInput;
     }
 
+    public void Mine(InputAction.CallbackContext context)
+    {
+        mineKeyDown = true;
+        miningRay.SetActive(true);
+    }
+
+    public void StopMining(InputAction.CallbackContext context)
+    {
+        mineKeyDown = false;
+        mining = false;
+        miningRay.SetActive(false);
+    }
+
+    private void UpdateMiningLogic()
+    {
+        bool breakable;
+        if (mineKeyDown)
+        {
+            Debug.DrawRay(cineCamera.transform.position, cineCamera.transform.forward * miningRange, Color.black, miningDestroyTime, true);
+            mining = Physics.Raycast(cineCamera.transform.position, cineCamera.transform.forward, out hitInfo, miningRange, 11111111, QueryTriggerInteraction.Ignore);
+
+            //If there is a collider, check if it is breakable
+            if (hitInfo.collider != null)
+            {
+                breakable = hitInfo.collider.gameObject.CompareTag("Breakable");
+            } else { breakable = false; }
+
+            // If we're mining something, add to the timer
+            if (mining && breakable)
+            {
+                mineTimer += Time.deltaTime;
+            } else { mineTimer = 0; }
+        }
+        else
+        {
+            mineTimer = 0;
+            breakable = false;
+        }
+
+        // If we've been mining long enough, destroy the object we're mining.
+        if (mineTimer >= miningDestroyTime && breakable)
+        {
+            Destroy(hitInfo.collider.gameObject); 
+            mineTimer = 0;
+        }
+    }
 }

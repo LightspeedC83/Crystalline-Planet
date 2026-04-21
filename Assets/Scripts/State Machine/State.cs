@@ -32,7 +32,8 @@ public class State
 
     public virtual void Enter()
     {
-        Debug.Log("enter state: " + this.ToString());
+        //This debug statement prints the new state on each state change
+        //Debug.Log("enter state: " + this.ToString());
     }
 
     public virtual void HandleInput()
