@@ -1,11 +1,12 @@
 using UnityEngine;
 
-public class JumpingState : State
+public class FallingState : State
 {
     private bool grounded;
+
     //private Vector3 airVelocity;
 
-    public JumpingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
+    public FallingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
     {
         this.playerController = playerController;
         this.stateMachine = stateMachine;
@@ -16,8 +17,6 @@ public class JumpingState : State
         base.Enter();
 
         grounded = false;
-        //Animation should trigger here
-        Jump();
     }
 
     public override void HandleInput()
@@ -60,10 +59,6 @@ public class JumpingState : State
 
         //update grounded state
         grounded = playerController.characterController.isGrounded;
-    }
 
-    private void Jump()
-    {
-        playerController.verticalVelocity = playerController.jumpForce;
     }
 }

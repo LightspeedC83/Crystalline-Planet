@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class LandingState : State
 {
-    private bool isMoving;
     private bool isJumping;
 
     public LandingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
@@ -14,22 +13,18 @@ public class LandingState : State
     public override void Enter()
     {
         base.Enter();
-        if (!moveAction.ReadValue<Vector2>().Equals(Vector2.zero)) {
-            isMoving = true;
-        } else { isMoving = false; }
-        //Begin animation/particles/whatever
+        //Play an animation if I need to
+        isJumping = false;
     }
 
     public override void HandleInput()
     {
         base.HandleInput();
-        if (moveAction.triggered)
+        if (isMoving)
         {
-            //This is lowkey terrible code, but not a problem yet. isMoving can't be reset to false, its only set to true when buttons are pressed. Same problem in other places
-            isMoving = true;
             moveInput = moveAction.ReadValue<Vector2>();
         }
-        if (jumpAction.triggered)
+        if (jumpKeyDown)
         {
             isJumping = true;
         }
@@ -49,6 +44,5 @@ public class LandingState : State
         {
             stateMachine.ChangeState(playerController.jumping);
         }
-        
     }
 }

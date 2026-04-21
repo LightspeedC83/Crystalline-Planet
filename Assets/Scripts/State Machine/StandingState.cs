@@ -2,14 +2,9 @@ using UnityEngine;
 
 public class StandingState : State
 {
-    float gravityValue;
     bool isJumping;
-    bool isMoving;
-    Vector3 currentVelocity;
     bool grounded;
-    float playerSpeed;
 
-    Vector3 characterVelocity;
 
     public StandingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
     {
@@ -24,7 +19,6 @@ public class StandingState : State
         isJumping = false;
         isMoving = false;
         moveInput = Vector2.zero;
-        currentVelocity = Vector3.zero;
         grounded = playerController.characterController.isGrounded;
     }
 
@@ -33,12 +27,11 @@ public class StandingState : State
         base.HandleInput();
 
         // Identifies which actions have been taken, records inputs that matter
-        if (moveAction.triggered)
+        if (isMoving)
         {
-            isMoving = true;
             moveInput = moveAction.ReadValue<Vector2>();
         }
-        if (jumpAction.triggered && grounded)
+        if (jumpKeyDown && grounded)
         {
             isJumping = true;
         }
@@ -51,6 +44,10 @@ public class StandingState : State
         //Animator logic update here
 
         // Updates the State Machine. The order of these matters, as if multiple are true, the last one will override.
+        if (!grounded)
+        {
+            stateMachine.ChangeState(playerController.falling);
+        }
         if (isMoving)
         {
             stateMachine.ChangeState(playerController.moving);
@@ -65,13 +62,12 @@ public class StandingState : State
     {
         base.PhysicsUpdate();
 
-        if (isMoving)
-        {
-            playerController.Move(moveInput);
-        } else
-        {
-            playerController.Move(Vector2.zero);
-        }
+        playerController.characterVelocity -= playerController.characterVelocity * playerController.frictionConstant;
+
+        playerController.characterVelocity.y = playerController.verticalVelocity * Time.deltaTime;
+        playerController.characterController.Move(playerController.characterVelocity);
+
+        grounded = playerController.characterController.isGrounded;
     }
 
     public override void Exit()

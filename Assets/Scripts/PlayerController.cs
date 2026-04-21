@@ -7,7 +7,8 @@ public class PlayerController : MonoBehaviour
     public CharacterController characterController;
     private PlayerInput playerInput;
     [SerializeField] public CinemachinePanTilt cineCamera;
-    private float verticalVelocity;
+    public float verticalVelocity;
+    public Vector3 characterVelocity;
 
 
     public StateMachine movementSM;
@@ -15,10 +16,13 @@ public class PlayerController : MonoBehaviour
     public MovingState moving;
     public LandingState landing;
     public JumpingState jumping;
+    public FallingState falling;
+
+    private State activeState;
 
     [Header("Controller Parameters")]
-    [SerializeField] public float movementSpeed = 11f, jumpForce = 10f, gravity = -30f;
-    [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.5f;
+    [SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f;
+    [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -32,7 +36,9 @@ public class PlayerController : MonoBehaviour
         moving = new MovingState(this, movementSM);
         landing = new LandingState(this, movementSM);
         jumping = new JumpingState(this, movementSM);
+        falling = new FallingState(this, movementSM);
 
+        activeState = standing;
         movementSM.Initialize(standing);
     }
 
@@ -41,12 +47,31 @@ public class PlayerController : MonoBehaviour
      */
     public void Move(Vector2 movementVector)
     {
-        Vector3 move = transform.forward * movementVector.y + transform.right * movementVector.x;
-        move *= movementSpeed * Time.deltaTime;
-        characterController.Move(move);
+        if (movementVector != Vector2.zero)
+        {
+            Vector3 move = transform.forward * movementVector.y + transform.right * movementVector.x;
+            move *= movementSpeed * Time.deltaTime;
 
-        verticalVelocity += gravity * Time.deltaTime;
-        characterController.Move(new Vector3(0, verticalVelocity, 0) * Time.deltaTime);
+            characterVelocity = move;
+        } else
+        {
+            if (characterController.isGrounded)
+            {
+                characterVelocity -= characterVelocity * frictionConstant;
+            } else
+            {
+                characterVelocity -= characterVelocity * frictionConstant * aerialFrictionConstant; // If the player is in the air, drag is reduced
+            }
+            //Debug.Log("friction applied");
+        }
+
+        if (!characterController.isGrounded) //This is bad code, doesn't account for States where I don't want the player to fall but they aren't grounded.
+        {
+            verticalVelocity += gravity * Time.deltaTime;
+        }
+        characterVelocity.y = verticalVelocity * Time.deltaTime;
+
+        characterController.Move(characterVelocity);
     }
 
     public void Rotate(Vector2 rotationVector)
@@ -59,24 +84,19 @@ public class PlayerController : MonoBehaviour
 
     public void Jump()
     {
-            verticalVelocity = jumpForce;
+        verticalVelocity = jumpForce;
     }
 
     public void updatePlayerState()
     {
-        State activeState = movementSM.GetActiveState();
-        //should call current state's HandleInput
+        activeState = movementSM.GetActiveState();
         activeState.HandleInput();
         activeState.LogicUpdate();
     }
 
     public void updatePlayerPosition()
     {
-        State activeState = movementSM.GetActiveState();
-        // Calls Move function, even if no input is detected.
-        //Vector2 movementVector = moveAction.ReadValue<Vector2>();
-        //Move(movementVector);
-
+        activeState = movementSM.GetActiveState();
         activeState.PhysicsUpdate();
     }
 

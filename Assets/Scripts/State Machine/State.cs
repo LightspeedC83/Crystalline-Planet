@@ -6,7 +6,10 @@ public class State
     public PlayerController playerController;
     public StateMachine stateMachine;
 
+    // These are just useful for multiple States
     protected Vector2 moveInput;
+    public static bool isMoving;
+    public static bool jumpKeyDown;
 
     public InputAction moveAction;
     public InputAction lookAction;
@@ -20,6 +23,11 @@ public class State
         moveAction = playerController.GetPlayerInput().actions["Move"];
         lookAction = playerController.GetPlayerInput().actions["Look"];
         jumpAction = playerController.GetPlayerInput().actions["Jump"];
+
+        moveAction.performed += StartMoving;
+        moveAction.canceled += StopMoving;
+        jumpAction.performed += StartJumping;
+        jumpAction.canceled += StopJumping;
     }
 
     public virtual void Enter()
@@ -47,5 +55,23 @@ public class State
 
     }
 
+    public void StopMoving(InputAction.CallbackContext context)
+    {
+        isMoving = false;
+    }
 
+    public void StartMoving(InputAction.CallbackContext context)
+    {
+        isMoving = true;
+    }
+
+    public void StartJumping(InputAction.CallbackContext context)
+    {
+        jumpKeyDown = true;
+    }
+
+    public void StopJumping(InputAction.CallbackContext context)
+    {
+        jumpKeyDown = false;
+    }
 }

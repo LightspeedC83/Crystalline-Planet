@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class MovingState : State
 {
-    private bool isMoving;
     private bool isJumping;
     private bool grounded;
     public MovingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
@@ -19,19 +18,17 @@ public class MovingState : State
         isMoving = true;
         isJumping = false;
         grounded = playerController.characterController.isGrounded;
-
-        moveAction.canceled += StopMoving;
+        moveInput = moveAction.ReadValue<Vector2>();
     }
 
     public override void HandleInput()
     {
         base.HandleInput();
         moveInput = moveAction.ReadValue<Vector2>();
-        if (jumpAction.triggered && grounded)
+        if (jumpKeyDown && grounded)
         {
             isJumping = true;
         }
-        // Movement stopping is handled separately (hopefully that's fine)
     }
 
     public override void LogicUpdate()
@@ -45,6 +42,9 @@ public class MovingState : State
         if (isJumping)
         {
             stateMachine.ChangeState(playerController.jumping);
+        } else if(!grounded)
+        {
+            stateMachine.ChangeState(playerController.falling);
         }
     }
 
@@ -52,20 +52,28 @@ public class MovingState : State
     {
         base.PhysicsUpdate();
 
-        playerController.Move(moveInput);
+        if (moveInput != Vector2.zero)
+        {
+            Vector3 move = playerController.transform.forward * moveInput.y + playerController.transform.right * moveInput.x;
+            move *= playerController.movementSpeed * Time.deltaTime;
+
+            playerController.characterVelocity = move;
+        }
+        else
+        {
+            playerController.characterVelocity -= playerController.characterVelocity * playerController.frictionConstant;
+            //Debug.Log("friction applied");
+        }
+
+        playerController.characterVelocity.y = playerController.verticalVelocity * Time.deltaTime;
+        playerController.characterController.Move(playerController.characterVelocity);
+
+        grounded = playerController.characterController.isGrounded;
     }
 
     public override void Exit()
     {
         base.Exit();
-
-        //Removes StopMoving from the event call while not in this state
-        moveAction.canceled -= StopMoving;
-    }
-
-    private void StopMoving(InputAction.CallbackContext context)
-    {
-        isMoving = false;
     }
 
 

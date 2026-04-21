@@ -25,12 +25,16 @@ public class InputHandler : MonoBehaviour
     void Update()
     {
         playerController.updatePlayerState();
-        playerController.updatePlayerPosition();
 
 
         // This is independent of the state machine, as look direction shouldn't affect state
         Vector2 lookVector = lookAction.ReadValue<Vector2>();
         playerController.Rotate(lookVector);
+    }
+
+    private void FixedUpdate()
+    {
+        playerController.updatePlayerPosition();
     }
 
     private void OnJumpPerformed(InputAction.CallbackContext context)
