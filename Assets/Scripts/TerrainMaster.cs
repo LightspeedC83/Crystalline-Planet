@@ -48,13 +48,11 @@ public class TerrainMaster : MonoBehaviour
         for (int i=0; i<locations.Count; i++){
             Vector3 targetPos = new Vector3((float)locations[i].Item1, (float)locations[i].Item2, (float)locations[i].Item3);
             targetPos = targetPos - new Vector3(master_x_lim/2f, master_y_lim/2f, master_z_lim/2f); // here we have to make the center of the DLA object be (0,0,0)
-            GameObject nextMapSegment = createMapSegment();
-            nextMapSegment.transform.position = targetPos*scaleFactor*effectiveSegmentRadius*segmentRadiusFudgeFactor;
-            nextMapSegment.transform.rotation = Quaternion.identity;
-
-            nextMapSegment.transform.localScale = nextMapSegment.transform.localScale*scaleFactor;
             
-            nextMapSegment.transform.SetParent(masterMapParent.transform);
+            GameObject nextMapSegment = createMapSegment();
+            nextMapSegment.transform.SetParent(masterMapParent.transform, false);
+            nextMapSegment.transform.localPosition = targetPos*scaleFactor*effectiveSegmentRadius*segmentRadiusFudgeFactor;
+            nextMapSegment.transform.localRotation = Quaternion.identity;
         }
         
     }
@@ -79,10 +77,12 @@ public class TerrainMaster : MonoBehaviour
         for (int i=0; i<locations.Count; i++){
             Vector3 targetPos = new Vector3((float)locations[i].Item1, (float)locations[i].Item2, (float)locations[i].Item3);
             targetPos = targetPos - new Vector3(x_lim/2, y_lim/2, z_lim/2); // here we have to make the center of the DLA object be (0,0,0)
-            GameObject newComponent = Instantiate(crystallineComponent, targetPos*scaleFactor, Quaternion.identity);
-            newComponent.transform.localScale = newComponent.transform.localScale*scaleFactor;
+
+            GameObject newComponent = Instantiate(crystallineComponent, segmentParent.transform);
+            newComponent.transform.localPosition = targetPos * scaleFactor;
+            newComponent.transform.localRotation = Quaternion.identity;
+            newComponent.transform.localScale = Vector3.one * scaleFactor;
             newComponent.SetActive(true);
-            newComponent.transform.SetParent(segmentParent.transform);
         }
 
         mapSegments.Add(segmentParent);
