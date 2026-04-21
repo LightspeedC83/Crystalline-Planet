@@ -461,15 +461,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21143e6350b6be04dbebd5963b2f3ab7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TerrainMaster
-  targetDensity: 0.025
+  targetDensity: 0.05
   bailOutLimit: 500
   x_lim: 50
   y_lim: 50
   z_lim: 50
-  scaleFactor: 1
   crystallineComponent: {fileID: 1439441940}
-  finalNumberMapSegements: 5
-  SegmentRadiusFudgeFactor: 0.6
 --- !u!4 &1065789890
 Transform:
   m_ObjectHideFlags: 0
