@@ -19,9 +19,15 @@ public class GnomeFarCollider : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider other){
+    void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")){
             master.playerVisible = true;
+        }
+    }
+    
+    void OnTriggerExit(Collider other){
+        if (other.CompareTag("Player")){
+            master.playerVisible = false;
         }
     }
 }

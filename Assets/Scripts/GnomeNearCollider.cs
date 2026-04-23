@@ -19,9 +19,15 @@ public class GnomeNearCollider : MonoBehaviour
         
     }
 
-    void OnTriggerStay(Collider other){
+    void OnTriggerEnter(Collider other){
         if (other.CompareTag("Player")){
-            master.playerVisible = true;
+            master.playerAttackable = true;
+        }
+    }
+    
+    void OnTriggerExit(Collider other){
+        if (other.CompareTag("Player")){
+            master.playerAttackable = false;
         }
     }
 }

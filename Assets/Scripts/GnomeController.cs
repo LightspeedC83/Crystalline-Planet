@@ -5,7 +5,8 @@ public enum GnomeState
 {
     walking,
     attacking,
-    recovery
+    recovery,
+    idle
 }
 
 public class GnomeController : MonoBehaviour
@@ -20,6 +21,7 @@ public class GnomeController : MonoBehaviour
     [Header("Behavior")]
     public float visualRadius = 60f;
     public float attackRadius = 30f;
+    public float idleRadius = 500f;
     
 
     [Header("Raycasts")]
@@ -27,6 +29,10 @@ public class GnomeController : MonoBehaviour
     public float cornerRayLength = 0.8f;    // shorter diagonal ray
     public float groundOffset = 0.5f;       // how far to hover above surface
     public LayerMask environmentMask;
+
+    [Header("Plugins")]
+    public GameObject player;
+
 
     private Vector3 currentNormal = Vector3.up;
     private bool forwardPresence;
@@ -48,6 +54,15 @@ public class GnomeController : MonoBehaviour
 
     void Update()
     {
+        // basically if we are super far from the player, we don't walk around
+        if ((player.transform.position - this.transform.position).magnitude >= idleRadius){ 
+            currentState = GnomeState.idle;
+        } else{
+            currentState = GnomeState.walking;
+        }
+
+    
+
         if (currentState == GnomeState.walking){
             CastRays();
             MoveForward();
@@ -136,6 +151,14 @@ public class GnomeController : MonoBehaviour
             RotateToHeading();
         }
         
+        //if the player is visible, we update the heading towards it
+        if (playerVisible){
+            Vector3 toPlayer = player.transform.position - this.transform.position;
+            toPlayer = Vector3.ProjectOnPlane(toPlayer, transform.up);
+
+            heading = toPlayer.normalized + transform.forward.normalized;
+            RotateToHeading();
+        }
         
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
      

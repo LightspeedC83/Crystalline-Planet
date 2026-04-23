@@ -89,7 +89,11 @@ public class TerrainMaster : MonoBehaviour
             newComponent.transform.localScale = Vector3.one * scaleFactor;
             newComponent.SetActive(true);
 
-            //now we determine if we are going to spawn an ore on 
+            //now we determine if we are going to spawn an ore on this block
+
+            //now we determine if we are going to place a gnome spawning object on this block
+
+
         }
 
         mapSegments.Add(segmentParent);
