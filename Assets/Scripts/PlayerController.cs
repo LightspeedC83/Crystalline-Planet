@@ -10,12 +10,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject miningRay;
     public float verticalVelocity;
     public Vector3 characterVelocity;
+    public bool hasDoubleJump;
 
     //Mining variables
     private bool mineKeyDown;
     private bool mining;
     private float mineTimer;
-    public int breakableLayerMask = 00001000;
     private RaycastHit hitInfo;
 
 
@@ -25,11 +25,23 @@ public class PlayerController : MonoBehaviour
     public LandingState landing;
     public JumpingState jumping;
     public FallingState falling;
+    public DoubleJumpingState doubleJumping;
 
     private State activeState;
 
-    [Header("Controller Parameters")][SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f, coyoteTime = 0.1f, miningDestroyTime = 1f, miningRange = 5f;
-    [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
+    [Header("Controller Parameters")] [SerializeField]
+    public float movementSpeed = 10f;
+    public float jumpForce = 10f;
+    public float gravity = -30f;
+    public float frictionConstant = 0.2f;
+    public float aerialFrictionConstant = 0.1f;
+    public float coyoteTime = 0.1f;
+    public float miningDestroyTime = 1f;
+    public float miningRange = 5f;
+    public float doubleJumpForce = 10f;
+    public float doubleJumpForwardBoost = 5f;
+    public float doubleJumpAdjustmentConstant = 0.1f;
+    [SerializeField] [Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,6 +60,7 @@ public class PlayerController : MonoBehaviour
         landing = new LandingState(this, movementSM);
         jumping = new JumpingState(this, movementSM);
         falling = new FallingState(this, movementSM);
+        doubleJumping = new DoubleJumpingState(this, movementSM);
         miningRay.SetActive(false);
 
         activeState = standing;

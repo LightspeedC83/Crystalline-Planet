@@ -41,6 +41,10 @@ public class FallingState : State
         {
             stateMachine.ChangeState(playerController.jumping);
         }
+        if (jumpKeyDown && coyoteTimer > playerController.coyoteTime && playerController.hasDoubleJump)
+        {
+            stateMachine.ChangeState(playerController.doubleJumping);
+        }
     }
 
     public override void PhysicsUpdate()

@@ -40,11 +40,6 @@ public class InputHandler : MonoBehaviour
         playerController.updatePlayerPosition();
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext context)
-    {
-        playerController.Jump();
-    }
-
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
         Pause();

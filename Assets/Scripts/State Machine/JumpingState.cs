@@ -18,6 +18,7 @@ public class JumpingState : State
         grounded = false;
         //Animation should trigger here
         Jump();
+        jumpKeyDown = false; //This is bad code, since the space key might still be pressed. Guarantees that the key has to be hit again to activate the double jump.
     }
 
     public override void HandleInput()
@@ -34,6 +35,10 @@ public class JumpingState : State
         if (grounded)
         {
             stateMachine.ChangeState(playerController.landing);
+        }
+        if (jumpKeyDown && playerController.hasDoubleJump)
+        {
+            stateMachine.ChangeState(playerController.doubleJumping);
         }
     }
 
