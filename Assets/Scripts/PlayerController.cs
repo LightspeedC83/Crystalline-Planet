@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float verticalVelocity;
     public Vector3 characterVelocity;
     public bool hasDoubleJump;
+    public bool hasDive;
 
     //Mining variables
     private bool mineKeyDown;
@@ -26,6 +27,9 @@ public class PlayerController : MonoBehaviour
     public JumpingState jumping;
     public FallingState falling;
     public DoubleJumpingState doubleJumping;
+    public DivingState diving;
+    public HardLandingState hardLanding;
+    public SuperJumpingState superJumping;
 
     private State activeState;
 
@@ -40,7 +44,11 @@ public class PlayerController : MonoBehaviour
     public float miningRange = 5f;
     public float doubleJumpForce = 10f;
     public float doubleJumpForwardBoost = 5f;
-    public float doubleJumpAdjustmentConstant = 0.1f;
+    public float doubleJumpSteeringConstant = 0.1f;
+    public float diveForce = 30f;
+    public float hardLandStunTime = 0.5f;
+    public float superJumpChargeTime = 0.3f;
+    public float superJumpForce = 40f;
     [SerializeField] [Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
 
 
@@ -54,6 +62,9 @@ public class PlayerController : MonoBehaviour
         mineTimer = 0f;
         mining = false;
 
+        hasDoubleJump = true;
+        hasDive = true;
+
         movementSM = new StateMachine();
         standing = new StandingState(this, movementSM);
         moving = new MovingState(this, movementSM);
@@ -61,6 +72,10 @@ public class PlayerController : MonoBehaviour
         jumping = new JumpingState(this, movementSM);
         falling = new FallingState(this, movementSM);
         doubleJumping = new DoubleJumpingState(this, movementSM);
+        diving = new DivingState(this, movementSM);
+        hardLanding = new HardLandingState(this, movementSM);
+        superJumping = new SuperJumpingState(this, movementSM);
+        
         miningRay.SetActive(false);
 
         activeState = standing;
@@ -176,6 +191,23 @@ public class PlayerController : MonoBehaviour
         {
             Destroy(hitInfo.collider.gameObject); 
             mineTimer = 0;
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //On a collision while diving, stop the dive
+        if (activeState == diving)
+        {
+            diving.StopDive();
+        }
+
+        //In any state, if you hit the bottom of a thing, set vertical velocity to zero so you start falling immediately.
+        if (hit.normal == Vector3.down)
+        {
+            Debug.Log("headbonk!");
+            characterController.Move(Vector3.down * 0.3f); //Shove down so we don't get caught in the ceiling
+            verticalVelocity = 0;
         }
     }
 }

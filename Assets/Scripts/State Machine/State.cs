@@ -14,6 +14,7 @@ public class State
     public InputAction moveAction;
     public InputAction lookAction;
     public InputAction jumpAction;
+    public InputAction diveAction;
 
     public State(PlayerController playerController, StateMachine stateMachine)
     {
@@ -23,6 +24,7 @@ public class State
         moveAction = playerController.GetPlayerInput().actions["Move"];
         lookAction = playerController.GetPlayerInput().actions["Look"];
         jumpAction = playerController.GetPlayerInput().actions["Jump"];
+        diveAction = playerController.GetPlayerInput().actions["Dive"];
 
         moveAction.performed += StartMoving;
         moveAction.canceled += StopMoving;

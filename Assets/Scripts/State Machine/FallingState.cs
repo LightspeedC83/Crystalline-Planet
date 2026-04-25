@@ -36,15 +36,17 @@ public class FallingState : State
         if (grounded)
         {
             stateMachine.ChangeState(playerController.landing);
-        }
-        if (jumpKeyDown && coyoteTimer <= playerController.coyoteTime)
+        } else if (diveAction.triggered && playerController.hasDive)
+        {
+            stateMachine.ChangeState(playerController.diving);
+        } else if (jumpKeyDown && coyoteTimer <= playerController.coyoteTime)
         {
             stateMachine.ChangeState(playerController.jumping);
-        }
-        if (jumpKeyDown && coyoteTimer > playerController.coyoteTime && playerController.hasDoubleJump)
+        } else if (jumpKeyDown && coyoteTimer > playerController.coyoteTime && playerController.hasDoubleJump)
         {
             stateMachine.ChangeState(playerController.doubleJumping);
         }
+        
     }
 
     public override void PhysicsUpdate()

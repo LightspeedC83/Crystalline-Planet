@@ -16,6 +16,7 @@ public class LandingState : State
         //Play an animation if I need to
         isJumping = false;
         playerController.hasDoubleJump = true;
+        playerController.hasDive = true;
     }
 
     public override void HandleInput()

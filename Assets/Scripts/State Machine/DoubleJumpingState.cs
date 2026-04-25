@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 
 public class DoubleJumpingState : State
 {
     private bool grounded;
     private Vector3 boostVector;
-    //private Vector3 airVelocity;
+    private Vector3 parallelVector;
+    private Vector3 perpendicularVector;
 
     public DoubleJumpingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
     {
@@ -36,6 +38,8 @@ public class DoubleJumpingState : State
         if (grounded)
         {
             stateMachine.ChangeState(playerController.landing);
+        } else if (diveAction.triggered && playerController.hasDive){
+            stateMachine.ChangeState(playerController.diving);
         }
     }
 
@@ -43,31 +47,21 @@ public class DoubleJumpingState : State
     {
         base.PhysicsUpdate();
 
-        if (moveInput != Vector2.zero)
-        {
-            Vector3 move = playerController.transform.forward * moveInput.y + playerController.transform.right * moveInput.x;
-            move *= playerController.movementSpeed * Time.deltaTime * playerController.airControl;
-            float dot = Vector3.Dot(move, boostVector);
+        Vector3 move = playerController.transform.forward * moveInput.y + playerController.transform.right * moveInput.x;
+        //Component of the input vector that is parallel to the boost
+        parallelVector = Vector3.Project(move, boostVector);
+        //Component of the input vector that is perpendicular to the boost
+        perpendicularVector = move - parallelVector;
 
-            //TODO: Use projection to get movement as vectors parallel and perpendicular to boostVector. Increment boostVector up or down based on magnitude of parallel input vector, lerp boostVector to the side by a factor related to the magnitude of the perpendicular vectors
-            //SEE DIAGRAM IN SKETCHBOOK
+        float dot = Vector3.Dot(parallelVector.normalized, boostVector.normalized);
+        boostVector += parallelVector * playerController.doubleJumpSteeringConstant * (1.5f - dot);
+        boostVector += perpendicularVector * playerController.doubleJumpSteeringConstant;
 
-            //playerController.characterVelocity = move;
-            playerController.characterVelocity = Time.deltaTime * boostVector;
+        playerController.characterVelocity = Time.deltaTime * boostVector;
 
-            //Lerps the direction of boostVector toward the direction of input, based on the adjustment constant.
-            boostVector = Vector3.Lerp(boostVector, move.normalized * boostVector.magnitude, playerController.doubleJumpAdjustmentConstant);
+        playerController.characterVelocity -= playerController.characterVelocity * playerController.aerialFrictionConstant;
 
-        }
-        else
-        {
-            playerController.characterVelocity -= playerController.characterVelocity * playerController.aerialFrictionConstant; // If the player is in the air, drag is reduced
-            /*if (playerController.characterVelocity.magnitude < boostVector.magnitude * Time.deltaTime)
-            {
-                playerController.characterVelocity = boostVector * Time.deltaTime;
-            }*/
-            //Debug.Log("friction applied");
-        }
+
         playerController.verticalVelocity += playerController.gravity * Time.deltaTime;
         playerController.characterVelocity.y = playerController.verticalVelocity * Time.deltaTime;
 
@@ -80,7 +74,8 @@ public class DoubleJumpingState : State
 
     private void DoubleJump()
     {
-        playerController.verticalVelocity = playerController.doubleJumpForce;
+        //Double jump's vertical force is additive, with a minimum upward velocity of the double jump force
+        playerController.verticalVelocity = Math.Max(playerController.doubleJumpForce, playerController.characterVelocity.y + playerController.doubleJumpForce);
         boostVector =  playerController.doubleJumpForwardBoost * playerController.transform.forward;
         Debug.Log("playerController.transform.forward: " + playerController.transform.forward);
     }
