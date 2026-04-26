@@ -12,13 +12,20 @@ public class TerrainMaster : MonoBehaviour
 
     [Header("Map Settings")]
     public float scaleFactor;
-    public GameObject crystallineComponent;
     public int finalNumberMapSegements;
     public float segmentRadiusFudgeFactor = 0.6f;
 
     [Header("Ore Settings")]
-    public GameObject oreObject;
     public float oreSpawnProbability;
+    
+    [Header("Gnome Spawners")]
+    public float gnomeSpawnerProbability; //probability that we place gnome spawner on a terrian block
+
+    [Header("Plug-Ins")]
+    public GameObject crystallineComponent; // map component
+    public GameObject oreObject; // ore component 
+    public GameObject gnomeSpawnerObject; // gnome spawner
+    
 
     [System.NonSerialized] public int numMapSegments = 0;
     [System.NonSerialized] List<GameObject> mapSegments = new List<GameObject>();
@@ -77,22 +84,54 @@ public class TerrainMaster : MonoBehaviour
             Vector3 targetPos = new Vector3((float)locations[i].Item1, (float)locations[i].Item2, (float)locations[i].Item3);
             targetPos = targetPos - new Vector3(x_lim/2, y_lim/2, z_lim/2); // here we have to make the center of the DLA object be (0,0,0)
 
-            GameObject newComponent;
-            if (Random.value >= oreSpawnProbability){ //normal block
-                newComponent = Instantiate(crystallineComponent, segmentParent.transform);
-            }else{ //ore block
-                newComponent = Instantiate(oreObject, segmentParent.transform);
-            }
-            
+            //INSTANTIATING A NEW MAP COMPONENT
+            GameObject newComponent = Instantiate(crystallineComponent, segmentParent.transform);
+                   
             newComponent.transform.localPosition = targetPos * scaleFactor;
             newComponent.transform.localRotation = Quaternion.identity;
             newComponent.transform.localScale = Vector3.one * scaleFactor;
             newComponent.SetActive(true);
 
+            // getting a vector from the center to a random face of the cube that is the new component
+            Vector3 cubeFaceVector = Vector3.zero;
+            switch (Random.Range(0, 6)){
+                case 0:
+                    cubeFaceVector = new Vector3(scaleFactor/2f, 0, 0);
+                    break;
+                case 1:
+                    cubeFaceVector = new Vector3(-scaleFactor/2f, 0, 0);
+                    break;
+                case 2:
+                    cubeFaceVector = new Vector3(0, scaleFactor/2f, 0);
+                    break;
+                case 3:
+                    cubeFaceVector = new Vector3(0, -scaleFactor/2f, 0);
+                    break;
+                case 4:
+                    cubeFaceVector = new Vector3(0, 0, scaleFactor/2f);
+                    break;
+                case 5:
+                    cubeFaceVector = new Vector3(0, 0, -scaleFactor/2f);
+                    break;
+            }
+            
             //now we determine if we are going to spawn an ore on this block
-
+            if (Random.value < oreSpawnProbability){
+                GameObject oreBlock = Instantiate(oreObject, segmentParent.transform);
+                oreBlock.transform.localPosition = newComponent.transform.position + cubeFaceVector;
+                oreBlock.transform.localRotation = Quaternion.LookRotation(cubeFaceVector);
+                // oreBlock.transform.localScale = Vector3.one * scaleFactor; //todo: I think that this multiplication by scale factor might present an issue in future, look into it
+                oreBlock.SetActive(true);
+            }
             //now we determine if we are going to place a gnome spawning object on this block
-
+            if(Random.value < gnomeSpawnerProbability){
+                //instantiating a gnome spawner object
+                GameObject gnomeSpawner = Instantiate(gnomeSpawnerObject, segmentParent.transform);
+                gnomeSpawner.transform.position = newComponent.transform.position + cubeFaceVector;
+                gnomeSpawner.transform.localRotation = Quaternion.LookRotation(cubeFaceVector);
+                // gnomeSpawner.transform.localScale = Vector3.one * scaleFactor;
+                gnomeSpawner.SetActive(true);
+            }
 
         }
 

@@ -5,7 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - Breakable
-  - environment
+  - Environment
   layers:
   - Default
   - TransparentFX

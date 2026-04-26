@@ -11,6 +11,7 @@ public enum GnomeState
 
 public class GnomeController : MonoBehaviour
 {   
+    
     [Header("Movement")]
     public float moveSpeed = 2f;
     public float rotationSpeed = 20f;
@@ -43,14 +44,18 @@ public class GnomeController : MonoBehaviour
     [System.NonSerialized] public bool playerAttackable;
 
     [System.NonSerialized] public GnomeState currentState;
+    [System.NonSerialized] public static int gnomeCount = 0;
 
 
     void Start()
     {
         heading = transform.forward; // start facing forward
         currentState = GnomeState.walking;
+        gnomeCount++;
     }
-
+    void OnDestroy(){
+        gnomeCount--;
+    }
 
     void Update()
     {
