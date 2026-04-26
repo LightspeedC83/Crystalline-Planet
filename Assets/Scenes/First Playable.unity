@@ -119,73 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &114545351
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 114545352}
-  - component: {fileID: 114545354}
-  - component: {fileID: 114545353}
-  m_Layer: 0
-  m_Name: nearCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &114545352
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114545351}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1550369941}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &114545353
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114545351}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 249e9d624c9b7284a96a75e32a8500b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GnomeNearCollider
-  master: {fileID: 1550369938}
---- !u!135 &114545354
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 114545351}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 25
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &169132195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -248,13 +181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 114545352}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1641112656}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
       insertIndex: -1
@@ -447,17 +374,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec4a9c6a53ebacb45b9a656c177bd1c0, type: 3}
---- !u!1 &711854950 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5351678873818682966, guid: bb5e0c62ab33dde4baad683dd749f716, type: 3}
-  m_PrefabInstance: {fileID: 1967064998}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1001131421 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8063459990215206516, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
   m_PrefabInstance: {fileID: 270411654}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1115444171}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
@@ -468,7 +390,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
   m_PrefabInstance: {fileID: 270411654}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1115444171}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ab5165d62a533d4cb20075124c5ab4e, type: 3}
@@ -586,6 +508,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1115444171 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2844265701816127813, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+  m_PrefabInstance: {fileID: 270411654}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1130207404 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7610362200715985624, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
@@ -934,23 +861,20 @@ MonoBehaviour:
   moveSpeed: 2
   rotationSpeed: 20
   glueToSurfaceSpeed: 0.1
-  randomInfluence: 5
+  randomInfluence: 2
   randomInfluenceProbability: 0.01
-  visualRadius: 0
+  visualRadius: 50
   attackRadius: 0
-  idleRadius: 500
+  idleRadius: 100
   rayLength: 1.2
   cornerRayLength: 0.8
-  groundOffset: 0.5
+  groundOffset: 0.1
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
-  player: {fileID: 711854950}
---- !u!4 &1550369941 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-  m_PrefabInstance: {fileID: 169132195}
-  m_PrefabAsset: {fileID: 0}
+  player: {fileID: 1115444171}
+  playerVisible: 0
+  playerAttackable: 0
 --- !u!1 &1572056709
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GnomeSpawner
   gnome: {fileID: 1550369937}
-  maxGnomes: 5
+  maxGnomes: 100
   gnomeSpawnProbability: 0.1
   startWithGnomeSpawned: 1
 --- !u!65 &1572056711
@@ -1161,73 +1085,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1641112655
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1641112656}
-  - component: {fileID: 1641112658}
-  - component: {fileID: 1641112657}
-  m_Layer: 0
-  m_Name: farCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1641112656
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641112655}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1550369941}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1641112657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641112655}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d171dbf447fee343b8be0d600e26932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GnomeFarCollider
-  master: {fileID: 1550369938}
---- !u!135 &1641112658
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1641112655}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 50
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1642024794
 GameObject:
   m_ObjectHideFlags: 0

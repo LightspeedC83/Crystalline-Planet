@@ -40,8 +40,8 @@ public class GnomeController : MonoBehaviour
     private bool downwardPresence;
     private Vector3 heading;
 
-    [System.NonSerialized] public bool playerVisible;
-    [System.NonSerialized] public bool playerAttackable;
+    public bool playerVisible;
+    public bool playerAttackable;
 
     [System.NonSerialized] public GnomeState currentState;
     [System.NonSerialized] public static int gnomeCount = 0;
@@ -59,13 +59,23 @@ public class GnomeController : MonoBehaviour
 
     void Update()
     {
-        // basically if we are super far from the player, we don't walk around
-        if ((player.transform.position - this.transform.position).magnitude >= idleRadius){ 
+        float distanceToPlayer = (player.transform.position - this.transform.position).magnitude;
+        //setting state based on distance to player
+        if (distanceToPlayer >= idleRadius){ // basically if we are super far from the player, we don't walk  around
             currentState = GnomeState.idle;
+        } else if(distanceToPlayer < attackRadius){
+            playerAttackable = true;
+            currentState = GnomeState.attacking;
         } else{
             currentState = GnomeState.walking;
         }
-
+        
+        // setting whether or not the gnome can see the player
+        if (distanceToPlayer <= visualRadius){ 
+            playerVisible = true;
+        } else{
+            playerVisible = false;
+        }
     
 
         if (currentState == GnomeState.walking){
@@ -73,11 +83,11 @@ public class GnomeController : MonoBehaviour
             MoveForward();
         }
         else if (currentState == GnomeState.attacking){
-
+            GnomeAttack();
         }
         else if (currentState == GnomeState.recovery){
-            
-        }
+            GnomeRecovery();
+        }   
     }
 
     void CastRays()
@@ -147,24 +157,21 @@ public class GnomeController : MonoBehaviour
             return;
         }
         
-        //adding random movement
-        if (downwardPresence && Random.value <= randomInfluenceProbability){
-            Vector3 randomVector = new Vector3(Random.Range(-randomInfluence, randomInfluence), Random.Range(-randomInfluence, randomInfluence), Random.Range(-randomInfluence, randomInfluence));
-            randomVector = Vector3.ProjectOnPlane(randomVector, transform.up);
-
-            heading = randomVector + transform.forward;
-            RotateToHeading();
-        }
+        
         
         //if the player is visible, we update the heading towards it
         if (playerVisible){
             Vector3 toPlayer = player.transform.position - this.transform.position;
             toPlayer = Vector3.ProjectOnPlane(toPlayer, transform.up);
-
-            heading = toPlayer.normalized + transform.forward.normalized;
-            RotateToHeading();
+            heading = toPlayer.normalized;
+            
+        } else if (downwardPresence && Random.value <= randomInfluenceProbability){//adding random movement
+            Vector3 randomVector = new Vector3(Random.Range(-randomInfluence, randomInfluence), Random.Range(-randomInfluence, randomInfluence), Random.Range(-randomInfluence, randomInfluence));
+            randomVector = Vector3.ProjectOnPlane(randomVector, transform.up);
+            heading = randomVector;
         }
-        
+
+        RotateToHeading();
         transform.position += transform.forward * moveSpeed * Time.deltaTime;
      
     }
@@ -189,4 +196,15 @@ public class GnomeController : MonoBehaviour
         Vector3 diagDirection = (transform.forward + (-transform.up)).normalized;
         Gizmos.DrawRay(transform.position, diagDirection * cornerRayLength);
     }
+
+
+    
+    void GnomeAttack(){
+
+    }
+
+    void GnomeRecovery(){
+
+    }
+
 }
