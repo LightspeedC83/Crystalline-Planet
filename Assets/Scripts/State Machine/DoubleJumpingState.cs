@@ -20,6 +20,7 @@ public class DoubleJumpingState : State
 
         grounded = false;
         //Animation should trigger here
+        playerController.audioSource.PlayOneShot(playerController.doubleJumpSound);
         DoubleJump();
         playerController.hasDoubleJump = false;
     }

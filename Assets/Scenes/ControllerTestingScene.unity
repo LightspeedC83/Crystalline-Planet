@@ -474,6 +474,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1768675406}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!224 &467185081 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1632147108247129874, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+  m_PrefabInstance: {fileID: 1308759850}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &601353370
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,7 +489,6 @@ GameObject:
   m_Component:
   - component: {fileID: 601353373}
   - component: {fileID: 601353372}
-  - component: {fileID: 601353371}
   - component: {fileID: 601353374}
   - component: {fileID: 601353375}
   - component: {fileID: 601353376}
@@ -495,14 +499,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &601353371
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 601353370}
-  m_Enabled: 1
 --- !u!20 &601353372
 Camera:
   m_ObjectHideFlags: 0
@@ -842,6 +838,10 @@ PrefabInstance:
       value: Character
       objectReference: {fileID: 0}
     - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: jumpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1e4c819499ec1984ca80d821955cf6da, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
       propertyPath: miningRay
       value: 
       objectReference: {fileID: 1530932571}
@@ -849,6 +849,34 @@ PrefabInstance:
       propertyPath: cineCamera
       value: 
       objectReference: {fileID: 248562868}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: landingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 07ca98927d29334468459f36ed1c0005, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: maxChargeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 96405cef5035c1541b768a52e07e0f8b, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: minChargeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9754cde2d3fac7541b21c20f07d92a60, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: doubleJumpSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 27ad03e82b22ebf4dbde76d804091df4, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: hardLandingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 1b50c69ba7f5f8b4c85b75a03968bae9, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: miningBreakSound
+      value: 
+      objectReference: {fileID: 8300000, guid: fac025570c90eeb4f832ac9afcdf9840, type: 3}
+    - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
+      propertyPath: jumpChargeDisplay
+      value: 
+      objectReference: {fileID: 467185081}
     - target: {fileID: 3135000456231404257, guid: 668fb4843bf6c9b47acfda9b49cc27a2, type: 3}
       propertyPath: characterController
       value: 

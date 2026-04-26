@@ -59,7 +59,7 @@ public class DivingState : State
     {
         diveVector = playerController.cineCamera.transform.forward * playerController.diveForce;
 
-        // Make the dive weaker the more up it points
+        // Make the dive weaker the more up it points, to a minimum of 30%
         float dot = Vector3.Dot(Vector3.up, diveVector.normalized);
         if (dot > 0)
         {
@@ -72,16 +72,9 @@ public class DivingState : State
         fallTimer = 0.5f;
     }
 
-    //Called when the dive runs into something
-    public void StopDive()
+    //Called when the dive runs into a non flat surface
+    public void LandDive()
     {
-        grounded = playerController.characterController.isGrounded;
-        if (grounded)
-        {
-            stateMachine.ChangeState(playerController.hardLanding);
-        } else
-        {
-            stateMachine.ChangeState(playerController.falling);
-        }
+        stateMachine.ChangeState(playerController.hardLanding);
     }
 }

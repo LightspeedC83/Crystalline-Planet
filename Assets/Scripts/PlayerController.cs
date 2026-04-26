@@ -6,8 +6,10 @@ public class PlayerController : MonoBehaviour
 {
     public CharacterController characterController;
     private PlayerInput playerInput;
+    [HideInInspector] public AudioSource audioSource;
     [SerializeField] public CinemachinePanTilt cineCamera;
     [SerializeField] public GameObject miningRay;
+    [SerializeField] public RectTransform jumpChargeDisplay;
     public float verticalVelocity;
     public Vector3 characterVelocity;
     public bool hasDoubleJump;
@@ -47,9 +49,19 @@ public class PlayerController : MonoBehaviour
     public float doubleJumpSteeringConstant = 0.1f;
     public float diveForce = 30f;
     public float hardLandStunTime = 0.5f;
-    public float superJumpChargeTime = 0.3f;
-    public float superJumpForce = 40f;
+    public float superJumpMinCharge = 0.2f;
+    public float superJumpMaxCharge = 0.5f;
     [SerializeField] [Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
+
+    [Header("Audio Files")] [SerializeField]
+    public AudioClip jumpSound;
+    public AudioClip doubleJumpSound;
+    public AudioClip landingSound;
+    public AudioClip hardLandingSound;
+    public AudioClip miningBreakSound;
+    public AudioClip minChargeSound;
+    public AudioClip maxChargeSound;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,10 +69,14 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
+        audioSource = GetComponent<AudioSource>();
 
         mineKeyDown = false;
         mineTimer = 0f;
         mining = false;
+
+        jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
 
         hasDoubleJump = true;
         hasDive = true;
@@ -189,21 +205,22 @@ public class PlayerController : MonoBehaviour
         // If we've been mining long enough, destroy the object we're mining.
         if (mineTimer >= miningDestroyTime && breakable)
         {
-            Destroy(hitInfo.collider.gameObject); 
+            Destroy(hitInfo.collider.gameObject);
+            audioSource.PlayOneShot(miningBreakSound);
             mineTimer = 0;
         }
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        //On a collision while diving, stop the dive
-        if (activeState == diving)
+        //On a collision while diving, land the dive on non-flat surfaces
+        if (activeState == diving && hit.normal != Vector3.up)
         {
-            diving.StopDive();
+            diving.LandDive();
         }
 
         //In any state, if you hit the bottom of a thing, set vertical velocity to zero so you start falling immediately.
-        if (hit.normal == Vector3.down)
+        if (Vector3.Dot(hit.normal, Vector3.down) > 0.5f)
         {
             Debug.Log("headbonk!");
             characterController.Move(Vector3.down * 0.3f); //Shove down so we don't get caught in the ceiling

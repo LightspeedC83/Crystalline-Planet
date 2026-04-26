@@ -14,6 +14,7 @@ public class LandingState : State
     {
         base.Enter();
         //Play an animation if I need to
+        playerController.audioSource.PlayOneShot(playerController.landingSound);
         isJumping = false;
         playerController.hasDoubleJump = true;
         playerController.hasDive = true;

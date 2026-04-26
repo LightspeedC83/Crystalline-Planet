@@ -3,6 +3,7 @@ using UnityEngine;
 public class SuperJumpingState : State
 {
     private bool grounded;
+    private float jumpCharge;
     //private Vector3 airVelocity;
 
     public SuperJumpingState(PlayerController playerController, StateMachine stateMachine) : base(playerController, stateMachine)
@@ -14,7 +15,8 @@ public class SuperJumpingState : State
     public override void Enter()
     {
         base.Enter();
-
+        playerController.jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        playerController.jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
         grounded = false;
         //Animation should trigger here
         SuperJump();
@@ -77,6 +79,11 @@ public class SuperJumpingState : State
 
     private void SuperJump()
     {
-        playerController.verticalVelocity = playerController.superJumpForce;
+        playerController.verticalVelocity = playerController.jumpForce * (1 + jumpCharge);
+    }
+
+    public void SetCharge(float jumpCharge)
+    {
+        this.jumpCharge = jumpCharge;
     }
 }

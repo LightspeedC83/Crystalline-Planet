@@ -17,6 +17,7 @@ public class JumpingState : State
 
         grounded = false;
         //Animation should trigger here
+        playerController.audioSource.PlayOneShot(playerController.jumpSound);
         Jump();
     }
 
