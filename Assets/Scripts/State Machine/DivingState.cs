@@ -75,6 +75,14 @@ public class DivingState : State
     //Called when the dive runs into a non flat surface
     public void LandDive()
     {
-        stateMachine.ChangeState(playerController.hardLanding);
+        //If the player landed on a slope that counts as grounded, change to hardLanding. Otherwise, play sound and start falling.
+        if (playerController.characterController.isGrounded)
+        {
+            stateMachine.ChangeState(playerController.hardLanding);
+        } else
+        {
+            playerController.audioSource.PlayOneShot(playerController.hardLandingSound);
+            stateMachine.ChangeState(playerController.falling);
+        }
     }
 }
