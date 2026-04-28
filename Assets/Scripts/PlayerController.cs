@@ -1,36 +1,75 @@
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public CharacterController characterController;
+    [HideInInspector] public CharacterController characterController;
     private PlayerInput playerInput;
+    [HideInInspector] public AudioSource audioSource;
     [SerializeField] public CinemachinePanTilt cineCamera;
     [SerializeField] public GameObject miningRay;
+    [SerializeField] public RectTransform jumpChargeDisplay;
+    [SerializeField] public GameObject particleGenerator;
+
+    [SerializeField] public TextMeshProUGUI oreTrackerText;
+    private int oreMined;
+    [SerializeField] public int oreToWin = 30;
+
     public float verticalVelocity;
     public Vector3 characterVelocity;
+    public bool hasDoubleJump;
+    public bool hasDive;
 
     //Mining variables
     private bool mineKeyDown;
     private bool mining;
     private float mineTimer;
-    public int breakableLayerMask = 00001000;
     private RaycastHit hitInfo;
 
-
+    // State Machine
     public StateMachine movementSM;
     public StandingState standing;
     public MovingState moving;
     public LandingState landing;
     public JumpingState jumping;
     public FallingState falling;
+    public DoubleJumpingState doubleJumping;
+    public DivingState diving;
+    public HardLandingState hardLanding;
+    public SuperJumpingState superJumping;
+    private State activeState; // The current state
 
-    private State activeState;
+    public Vector3 respawnPoint;
 
-    [Header("Controller Parameters")]
-    [SerializeField] public float movementSpeed = 10f, jumpForce = 10f, gravity = -30f, frictionConstant = 0.2f, aerialFrictionConstant = 0.1f, miningDestroyTime = 1f, miningRange = 5f;
-    [SerializeField][Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
+    [Header("Controller Parameters")] [SerializeField]
+    public float movementSpeed = 10f;
+    public float jumpForce = 10f;
+    public float gravity = -30f;
+    public float frictionConstant = 0.2f;
+    public float aerialFrictionConstant = 0.1f;
+    public float coyoteTime = 0.1f;
+    public float miningDestroyTime = 1f;
+    public float miningRange = 5f;
+    public float doubleJumpForce = 10f;
+    public float doubleJumpForwardBoost = 5f;
+    public float doubleJumpSteeringConstant = 0.1f;
+    public float diveForce = 30f;
+    public float hardLandStunTime = 0.5f;
+    public float superJumpMinCharge = 0.2f;
+    public float superJumpMaxCharge = 0.5f;
+    [SerializeField] [Tooltip("Aerial control multiplier, range 0-1")] public float airControl = 0.75f;
+
+    [Header("Audio Files")] [SerializeField]
+    public AudioClip jumpSound;
+    public AudioClip doubleJumpSound;
+    public AudioClip landingSound;
+    public AudioClip hardLandingSound;
+    public AudioClip miningBreakSound;
+    public AudioClip minChargeSound;
+    public AudioClip maxChargeSound;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,10 +77,17 @@ public class PlayerController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
+        audioSource = GetComponent<AudioSource>();
 
         mineKeyDown = false;
         mineTimer = 0f;
         mining = false;
+
+        jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
+
+        hasDoubleJump = true;
+        hasDive = true;
 
         movementSM = new StateMachine();
         standing = new StandingState(this, movementSM);
@@ -49,7 +95,14 @@ public class PlayerController : MonoBehaviour
         landing = new LandingState(this, movementSM);
         jumping = new JumpingState(this, movementSM);
         falling = new FallingState(this, movementSM);
+        doubleJumping = new DoubleJumpingState(this, movementSM);
+        diving = new DivingState(this, movementSM);
+        hardLanding = new HardLandingState(this, movementSM);
+        superJumping = new SuperJumpingState(this, movementSM);
+        
         miningRay.SetActive(false);
+        oreMined = 0;
+        oreTrackerText.SetText("Ore: " + oreMined + "/" + oreToWin);
 
         activeState = standing;
         movementSM.Initialize(standing);
@@ -131,6 +184,7 @@ public class PlayerController : MonoBehaviour
         mineKeyDown = false;
         mining = false;
         miningRay.SetActive(false);
+        particleGenerator.SetActive(false);
     }
 
     private void UpdateMiningLogic()
@@ -151,7 +205,15 @@ public class PlayerController : MonoBehaviour
             if (mining && breakable)
             {
                 mineTimer += Time.deltaTime;
-            } else { mineTimer = 0; }
+                particleGenerator.SetActive(true);
+                Vector3 particlePosition = new Vector3(transform.position.x, transform.position.y - 0.48f, transform.position.z);
+                particlePosition += hitInfo.distance * cineCamera.transform.forward;
+                particleGenerator.transform.position = particlePosition;
+            } else 
+            {
+                particleGenerator.SetActive(false);
+                mineTimer = 0; 
+            }
         }
         else
         {
@@ -162,8 +224,38 @@ public class PlayerController : MonoBehaviour
         // If we've been mining long enough, destroy the object we're mining.
         if (mineTimer >= miningDestroyTime && breakable)
         {
-            Destroy(hitInfo.collider.gameObject); 
+            Destroy(hitInfo.collider.gameObject);
+            audioSource.PlayOneShot(miningBreakSound);
             mineTimer = 0;
+            oreMined++;
+            oreTrackerText.SetText("Ore: " + oreMined + "/" + oreToWin);
         }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //On a collision while diving, land the dive on non-flat surfaces
+        if (activeState == diving && hit.normal != Vector3.up)
+        {
+            diving.LandDive();
+        }
+
+        //In any state, if you hit the bottom of a thing, set vertical velocity to zero so you start falling immediately.
+        if (Vector3.Dot(hit.normal, Vector3.down) > 0.5f)
+        {
+            Debug.Log("headbonk!");
+            characterController.Move(Vector3.down * 0.3f); //Shove down so we don't get caught in the ceiling
+            verticalVelocity = 0;
+        }
+    }
+
+    //Incomplete method to call when the player dies
+    public void OnDeath()
+    {
+        Vector3 previousPosition = transform.position;
+        characterController.enabled = false;
+        transform.position = respawnPoint;
+        Debug.Log("death! Respawned at: " + respawnPoint + " from point: " + previousPosition);
+        characterController.enabled = true;
     }
 }

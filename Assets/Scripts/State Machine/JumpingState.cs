@@ -17,6 +17,7 @@ public class JumpingState : State
 
         grounded = false;
         //Animation should trigger here
+        playerController.audioSource.PlayOneShot(playerController.jumpSound);
         Jump();
     }
 
@@ -34,6 +35,12 @@ public class JumpingState : State
         if (grounded)
         {
             stateMachine.ChangeState(playerController.landing);
+        } else if (diveAction.triggered && playerController.hasDive)
+        {
+            stateMachine.ChangeState(playerController.diving);
+        } else if (jumpAction.triggered && playerController.hasDoubleJump)
+        {
+            stateMachine.ChangeState(playerController.doubleJumping);
         }
     }
 
@@ -53,7 +60,14 @@ public class JumpingState : State
             playerController.characterVelocity -= playerController.characterVelocity * playerController.aerialFrictionConstant; // If the player is in the air, drag is reduced
             //Debug.Log("friction applied");
         }
-        playerController.verticalVelocity += playerController.gravity * Time.deltaTime;
+        //If the jump key is held and the player is still moving up, reduce gravity
+        if (jumpKeyDown && playerController.verticalVelocity >= 0)
+        {
+            playerController.verticalVelocity += playerController.gravity * Time.deltaTime * 0.75f;
+        } else
+        {
+            playerController.verticalVelocity += playerController.gravity * Time.deltaTime;
+        }
         playerController.characterVelocity.y = playerController.verticalVelocity * Time.deltaTime;
 
         playerController.characterController.Move(playerController.characterVelocity * playerController.airControl);

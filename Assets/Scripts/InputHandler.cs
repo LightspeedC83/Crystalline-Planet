@@ -5,8 +5,9 @@ public class InputHandler : MonoBehaviour
 {
     [SerializeField] public PlayerController playerController;
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private GameObject pauseMenu;
 
-    private InputAction moveAction, lookAction, jumpAction, pauseAction, mineAction;
+    private InputAction lookAction, pauseAction, unpauseAction, mineAction;
     private bool isPaused;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,13 +15,20 @@ public class InputHandler : MonoBehaviour
     {
         lookAction = playerInput.actions.FindAction("Look");
         pauseAction = playerInput.actions.FindAction("Pause");
+        unpauseAction = playerInput.actions.FindAction("Unpause");
         mineAction = playerInput.actions.FindAction("Mine");
 
+
         pauseAction.performed += OnPausePerformed;
+        unpauseAction.performed += OnPausePerformed;
         mineAction.performed += playerController.Mine;
         mineAction.canceled += playerController.StopMining;
 
         Cursor.lockState = CursorLockMode.Locked;
+        pauseMenu.SetActive(false);
+        isPaused = false;
+        playerInput.defaultActionMap = "Player";
+        playerInput.SwitchCurrentActionMap("Player");
         
     }
 
@@ -40,27 +48,33 @@ public class InputHandler : MonoBehaviour
         playerController.updatePlayerPosition();
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext context)
-    {
-        playerController.Jump();
-    }
-
     private void OnPausePerformed(InputAction.CallbackContext context)
     {
-        Pause();
+        TogglePause();
     }
 
     /** Pauses or unpauses the game based on its current state
      */
-    private void Pause()
+    public void TogglePause()
     {
         if (isPaused)
         {
             // TODO: unpause the game, deactivate UI action map, and freeze cursor
+            playerInput.SwitchCurrentActionMap("Player");
+            pauseMenu.SetActive(false);
+            Cursor.lockState = CursorLockMode.Locked;
+            Debug.Log("Unpaused");
+            Time.timeScale = 1;
         }
         else
         {
             // TODO: pause the game, activate UI action map, and unfreeze cursor
+            playerInput.SwitchCurrentActionMap("UI");
+            pauseMenu.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            Debug.Log("Paused");
+            Time.timeScale = 0;
         }
+        isPaused = !isPaused;
     }
 }

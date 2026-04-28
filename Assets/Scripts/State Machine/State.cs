@@ -14,6 +14,7 @@ public class State
     public InputAction moveAction;
     public InputAction lookAction;
     public InputAction jumpAction;
+    public InputAction diveAction;
 
     public State(PlayerController playerController, StateMachine stateMachine)
     {
@@ -23,6 +24,7 @@ public class State
         moveAction = playerController.GetPlayerInput().actions["Move"];
         lookAction = playerController.GetPlayerInput().actions["Look"];
         jumpAction = playerController.GetPlayerInput().actions["Jump"];
+        diveAction = playerController.GetPlayerInput().actions["Dive"];
 
         moveAction.performed += StartMoving;
         moveAction.canceled += StopMoving;
@@ -33,7 +35,7 @@ public class State
     public virtual void Enter()
     {
         //This debug statement prints the new state on each state change
-        //Debug.Log("enter state: " + this.ToString());
+        Debug.Log("enter state: " + this.ToString());
     }
 
     public virtual void HandleInput()
@@ -53,7 +55,10 @@ public class State
 
     public virtual void Exit()
     {
-
+        if (playerController.characterController.isGrounded)
+        {
+            playerController.respawnPoint = playerController.transform.position;
+        }
     }
 
     public void StopMoving(InputAction.CallbackContext context)
