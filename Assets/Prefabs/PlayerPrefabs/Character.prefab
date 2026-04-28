@@ -278,13 +278,13 @@ MonoBehaviour:
   superJumpMinCharge: 0.2
   superJumpMaxCharge: 0.5
   airControl: 0.75
-  jumpSound: {fileID: 0}
-  doubleJumpSound: {fileID: 0}
-  landingSound: {fileID: 0}
-  hardLandingSound: {fileID: 0}
-  miningBreakSound: {fileID: 0}
-  minChargeSound: {fileID: 0}
-  maxChargeSound: {fileID: 0}
+  jumpSound: {fileID: 8300000, guid: 1e4c819499ec1984ca80d821955cf6da, type: 3}
+  doubleJumpSound: {fileID: 8300000, guid: 27ad03e82b22ebf4dbde76d804091df4, type: 3}
+  landingSound: {fileID: 8300000, guid: 07ca98927d29334468459f36ed1c0005, type: 3}
+  hardLandingSound: {fileID: 8300000, guid: 1b50c69ba7f5f8b4c85b75a03968bae9, type: 3}
+  miningBreakSound: {fileID: 8300000, guid: fac025570c90eeb4f832ac9afcdf9840, type: 3}
+  minChargeSound: {fileID: 8300000, guid: 9754cde2d3fac7541b21c20f07d92a60, type: 3}
+  maxChargeSound: {fileID: 8300000, guid: 96405cef5035c1541b768a52e07e0f8b, type: 3}
 --- !u!114 &8063459990215206516
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public CharacterController characterController;
+    [HideInInspector] public CharacterController characterController;
     private PlayerInput playerInput;
     [HideInInspector] public AudioSource audioSource;
     [SerializeField] public CinemachinePanTilt cineCamera;
