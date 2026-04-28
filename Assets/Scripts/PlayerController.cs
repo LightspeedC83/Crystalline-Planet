@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public CinemachinePanTilt cineCamera;
     [SerializeField] public GameObject miningRay;
     [SerializeField] public RectTransform jumpChargeDisplay;
+    [SerializeField] public GameObject particleGenerator;
     public float verticalVelocity;
     public Vector3 characterVelocity;
     public bool hasDoubleJump;
@@ -174,6 +175,7 @@ public class PlayerController : MonoBehaviour
         mineKeyDown = false;
         mining = false;
         miningRay.SetActive(false);
+        particleGenerator.SetActive(false);
     }
 
     private void UpdateMiningLogic()
@@ -194,7 +196,15 @@ public class PlayerController : MonoBehaviour
             if (mining && breakable)
             {
                 mineTimer += Time.deltaTime;
-            } else { mineTimer = 0; }
+                particleGenerator.SetActive(true);
+                Vector3 particlePosition = new Vector3(transform.position.x, transform.position.y - 0.48f, transform.position.z);
+                particlePosition += hitInfo.distance * cineCamera.transform.forward;
+                particleGenerator.transform.position = particlePosition;
+            } else 
+            {
+                particleGenerator.SetActive(false);
+                mineTimer = 0; 
+            }
         }
         else
         {
