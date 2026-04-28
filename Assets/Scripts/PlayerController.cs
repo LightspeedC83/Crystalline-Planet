@@ -2,6 +2,7 @@ using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -42,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private State activeState; // The current state
 
     public Vector3 respawnPoint;
+    private int gameOverScene = 1;
 
     [Header("Controller Parameters")] [SerializeField]
     public float movementSpeed = 10f;
@@ -252,10 +254,12 @@ public class PlayerController : MonoBehaviour
     //Incomplete method to call when the player dies
     public void OnDeath()
     {
-        Vector3 previousPosition = transform.position;
+        /*Vector3 previousPosition = transform.position;
         characterController.enabled = false;
         transform.position = respawnPoint;
         Debug.Log("death! Respawned at: " + respawnPoint + " from point: " + previousPosition);
-        characterController.enabled = true;
+        characterController.enabled = true;*/
+
+        SceneManager.LoadScene(gameOverScene);
     }
 }
