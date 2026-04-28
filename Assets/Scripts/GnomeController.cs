@@ -118,14 +118,14 @@ public class GnomeController : MonoBehaviour
         
 
         // --- DIAGONAL RAY (detect walls / corners ahead) ---
-        Vector3 diagDirection = (transform.forward + (-transform.up)).normalized;
+        
         RaycastHit cornerHit;
 
-        Debug.DrawRay(transform.position, diagDirection * cornerRayLength, Color.red);
+        Debug.DrawRay(transform.position, transform.forward * cornerRayLength, Color.red);
         Debug.DrawRay(transform.position, -transform.up * rayLength, Color.green);
 
         
-        if (Physics.Raycast(transform.position, diagDirection, out cornerHit, cornerRayLength, environmentMask))//if there is a forward hit
+        if (Physics.Raycast(transform.position, transform.forward, out cornerHit, cornerRayLength, environmentMask))//if there is a forward hit
         {
             forwardPresence = true;
             // Hit a wall ahead - rotate UPWARD (backward tilt) to climb it
@@ -193,14 +193,37 @@ public class GnomeController : MonoBehaviour
 
         // Diagonal ray
         Gizmos.color = Color.red;
-        Vector3 diagDirection = (transform.forward + (-transform.up)).normalized;
-        Gizmos.DrawRay(transform.position, diagDirection * cornerRayLength);
+        Gizmos.DrawRay(transform.position, transform.forward * cornerRayLength);
     }
 
 
     
     void GnomeAttack(){
+        // if (!isFlying)
+        // {
+        //     // --- LAUNCH PHASE ---
+        //     launchTimer += Time.deltaTime;
+        //     animator.Play("launch");
 
+        //     if (launchTimer >= launchAnimationLength)
+        //     {
+        //         isFlying = true;
+        //         launchTimer = 0f;
+        //         animator.Play("flying");
+        //     }
+        // }
+        // else
+        // {
+        //     // --- FLYING PHASE ---
+        //     Vector3 toPlayer = (player.transform.position - transform.position).normalized;
+
+        //     // tilt up direction towards player
+        //     Quaternion targetRot = Quaternion.LookRotation(transform.forward, toPlayer);
+        //     transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+
+        //     // fly in up direction (like a launched projectile)
+        //     transform.position += transform.up * flySpeed * Time.deltaTime;
+        // }
     }
 
     void GnomeRecovery(){
