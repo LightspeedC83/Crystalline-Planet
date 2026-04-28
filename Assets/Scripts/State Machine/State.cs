@@ -55,7 +55,10 @@ public class State
 
     public virtual void Exit()
     {
-
+        if (playerController.characterController.isGrounded)
+        {
+            playerController.respawnPoint = playerController.transform.position;
+        }
     }
 
     public void StopMoving(InputAction.CallbackContext context)

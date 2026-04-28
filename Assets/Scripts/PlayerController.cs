@@ -1,3 +1,4 @@
+using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,6 +12,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public GameObject miningRay;
     [SerializeField] public RectTransform jumpChargeDisplay;
     [SerializeField] public GameObject particleGenerator;
+
+    [SerializeField] public TextMeshProUGUI oreTrackerText;
+    private int oreMined;
+    [SerializeField] public int oreToWin = 30;
+
     public float verticalVelocity;
     public Vector3 characterVelocity;
     public bool hasDoubleJump;
@@ -22,7 +28,7 @@ public class PlayerController : MonoBehaviour
     private float mineTimer;
     private RaycastHit hitInfo;
 
-
+    // State Machine
     public StateMachine movementSM;
     public StandingState standing;
     public MovingState moving;
@@ -33,8 +39,9 @@ public class PlayerController : MonoBehaviour
     public DivingState diving;
     public HardLandingState hardLanding;
     public SuperJumpingState superJumping;
+    private State activeState; // The current state
 
-    private State activeState;
+    public Vector3 respawnPoint;
 
     [Header("Controller Parameters")] [SerializeField]
     public float movementSpeed = 10f;
@@ -94,6 +101,8 @@ public class PlayerController : MonoBehaviour
         superJumping = new SuperJumpingState(this, movementSM);
         
         miningRay.SetActive(false);
+        oreMined = 0;
+        oreTrackerText.SetText("Ore: " + oreMined + "/" + oreToWin);
 
         activeState = standing;
         movementSM.Initialize(standing);
@@ -218,6 +227,8 @@ public class PlayerController : MonoBehaviour
             Destroy(hitInfo.collider.gameObject);
             audioSource.PlayOneShot(miningBreakSound);
             mineTimer = 0;
+            oreMined++;
+            oreTrackerText.SetText("Ore: " + oreMined + "/" + oreToWin);
         }
     }
 
@@ -236,5 +247,15 @@ public class PlayerController : MonoBehaviour
             characterController.Move(Vector3.down * 0.3f); //Shove down so we don't get caught in the ceiling
             verticalVelocity = 0;
         }
+    }
+
+    //Incomplete method to call when the player dies
+    public void OnDeath()
+    {
+        Vector3 previousPosition = transform.position;
+        characterController.enabled = false;
+        transform.position = respawnPoint;
+        Debug.Log("death! Respawned at: " + respawnPoint + " from point: " + previousPosition);
+        characterController.enabled = true;
     }
 }

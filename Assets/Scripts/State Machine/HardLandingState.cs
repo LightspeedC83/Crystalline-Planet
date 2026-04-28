@@ -58,7 +58,7 @@ public class HardLandingState : State
     {
         base.LogicUpdate();
 
-        //Play sounds if needed
+        //Play sounds and updated charge display
         if (jumpTimer < playerController.superJumpMinCharge)
         {
             playerController.jumpChargeDisplay.localScale.Set((jumpTimer / playerController.superJumpMinCharge), 1, 1);
@@ -109,5 +109,12 @@ public class HardLandingState : State
     {
         base.PhysicsUpdate();
         stunTimer += Time.deltaTime;
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+        playerController.jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        playerController.jumpChargeDisplay.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 0);
     }
 }
