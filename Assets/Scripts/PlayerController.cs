@@ -167,7 +167,12 @@ public class PlayerController : MonoBehaviour
         activeState = movementSM.GetActiveState();
         activeState.PhysicsUpdate();
         UpdateMiningLogic();
-        
+
+        // If the player has fallen too far, kill them.
+        if (transform.position.y <= -1000)
+        {
+            OnDeath();
+        }
     }
 
     public PlayerInput GetPlayerInput()

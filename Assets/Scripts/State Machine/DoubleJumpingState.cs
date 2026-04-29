@@ -17,7 +17,6 @@ public class DoubleJumpingState : State
     public override void Enter()
     {
         base.Enter();
-        playerController.OnDeath();
         grounded = false;
         //Animation should trigger here
         playerController.audioSource.PlayOneShot(playerController.doubleJumpSound);

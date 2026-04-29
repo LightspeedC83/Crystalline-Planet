@@ -29,7 +29,7 @@ public class InputHandler : MonoBehaviour
         isPaused = false;
         playerInput.defaultActionMap = "Player";
         playerInput.SwitchCurrentActionMap("Player");
-        
+
     }
 
     // Update is called once per frame
@@ -76,5 +76,19 @@ public class InputHandler : MonoBehaviour
             Time.timeScale = 0;
         }
         isPaused = !isPaused;
+    }
+
+    // Gets rid of action callbacks when the player can't input things
+    public void OnDestroy()
+    {
+        pauseAction.performed -= OnPausePerformed;
+        unpauseAction.performed -= OnPausePerformed;
+        mineAction.performed -= playerController.Mine;
+        mineAction.canceled -= playerController.StopMining;
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }
