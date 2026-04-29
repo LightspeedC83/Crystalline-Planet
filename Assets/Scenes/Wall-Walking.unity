@@ -343,113 +343,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &190777676 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
-  m_PrefabInstance: {fileID: 1229820799}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &190777677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 190777676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f71b1b10239735458e7e16b65282d83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GnomeScript
-  moveSpeed: 2
-  rotationSpeed: 20
-  glueToSurfaceSpeed: 0.1
-  randomInfluence: 5
-  randomInfluenceProbability: 0.01
-  visualRadius: 0
-  attackRadius: 0
-  idleRadius: 500
-  rayLength: 1.2
-  cornerRayLength: 0.8
-  groundOffset: 0.5
-  rayOriginOffset: 0.3
-  environmentMask:
-    serializedVersion: 2
-    m_Bits: 64
-  player: {fileID: 0}
-  playerVisible: 0
-  playerAttackable: 0
---- !u!4 &190777680 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-  m_PrefabInstance: {fileID: 1229820799}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &251854011
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 251854012}
-  - component: {fileID: 251854013}
-  - component: {fileID: 251854014}
-  m_Layer: 0
-  m_Name: nearCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &251854012
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251854011}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 190777680}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &251854013
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251854011}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 25
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &251854014
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 251854011}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 249e9d624c9b7284a96a75e32a8500b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GnomeNearCollider
-  master: {fileID: 190777677}
 --- !u!1 &666929085 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
@@ -469,22 +362,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GnomeController
   moveSpeed: 2
   rotationSpeed: 20
-  glueToSurfaceSpeed: 0.1
-  randomInfluence: 2
-  randomInfluenceProbability: 0.01
+  surfaceAlignSpeed: 12
+  groundOffset: 0.5
   visualRadius: 0
   attackRadius: 0
-  idleRadius: 500
-  rayLength: 1.2
-  cornerRayLength: 0.8
-  groundOffset: 0.5
-  rayOriginOffset: 0.7
+  idleRadius: 100
+  attackSpeed: 20
+  attackDuration: 2
+  randomTurnInterval: 2
+  randomTurnAngle: 60
+  probeLength: 1.5
+  probeRadius: 0.25
+  edgeProbeDistance: 0.6
   environmentMask:
     serializedVersion: 2
     m_Bits: 64
-  player: {fileID: 1928069586}
-  playerVisible: 0
-  playerAttackable: 0
+  gravity: 9.81
+  recoveryProbeLength: 50
+  player: {fileID: 1928069590}
 --- !u!95 &666929087
 Animator:
   serializedVersion: 7
@@ -760,7 +655,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 7.488
+      value: 8.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1013,80 +908,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1229820799
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.088002264
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 7.679
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4.468
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7070038
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.7072099
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90.017
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 34b4eac0b9480884caf5911b219c0b15, type: 2}
-    - target: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_Name
-      value: Gnome
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 251854012}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2011391162}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 190777677}
-  m_SourcePrefab: {fileID: 100100000, guid: f619844df81f452419607bd6885c99b8, type: 3}
 --- !u!1 &1500098079
 GameObject:
   m_ObjectHideFlags: 0
@@ -1535,73 +1356,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2011391161
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2011391162}
-  - component: {fileID: 2011391163}
-  - component: {fileID: 2011391164}
-  m_Layer: 0
-  m_Name: farCollider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2011391162
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011391161}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 190777680}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &2011391163
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011391161}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 50
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2011391164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011391161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d171dbf447fee343b8be0d600e26932, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GnomeFarCollider
-  master: {fileID: 190777677}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1614,6 +1368,5 @@ SceneRoots:
   - {fileID: 1838572086}
   - {fileID: 1031188313}
   - {fileID: 24957388}
-  - {fileID: 1229820799}
   - {fileID: 1056120569}
   - {fileID: 1928069590}

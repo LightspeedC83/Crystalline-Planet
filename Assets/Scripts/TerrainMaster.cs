@@ -120,7 +120,7 @@ public class TerrainMaster : MonoBehaviour
                 GameObject oreBlock = Instantiate(oreObject, segmentParent.transform);
                 oreBlock.transform.localPosition = newComponent.transform.position + cubeFaceVector;
                 oreBlock.transform.localRotation = Quaternion.LookRotation(cubeFaceVector);
-                // oreBlock.transform.localScale = Vector3.one * scaleFactor; //todo: I think that this multiplication by scale factor might present an issue in future, look into it
+                oreBlock.transform.localScale = Vector3.one * scaleFactor; //todo: I think that this multiplication by scale factor might present an issue in future, look into it
                 oreBlock.SetActive(true);
             }
             //now we determine if we are going to place a gnome spawning object on this block
