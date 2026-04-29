@@ -29,6 +29,7 @@ public class GnomeController : MonoBehaviour
     public float rayLength = 1.2f;          // downward ray length
     public float cornerRayLength = 0.8f;    // shorter diagonal ray
     public float groundOffset = 0.5f;       // how far to hover above surface
+    public float rayOriginOffset = 0.3f;
     public LayerMask environmentMask;
 
     [Header("Plugins")]
@@ -92,9 +93,11 @@ public class GnomeController : MonoBehaviour
 
     void CastRays()
     {
+        Vector3 rayOrigin = transform.position + transform.up * rayOriginOffset;
+
         // --- DOWNWARD RAY (stay glued to surface) ---
         RaycastHit groundHit;
-        if (Physics.Raycast(transform.position, -transform.up, out groundHit, rayLength, environmentMask))
+        if (Physics.Raycast(rayOrigin, -transform.up, out groundHit, rayLength, environmentMask))
         {
             downwardPresence = true;
             // Smoothly align normal to surface
@@ -118,14 +121,14 @@ public class GnomeController : MonoBehaviour
         
 
         // --- DIAGONAL RAY (detect walls / corners ahead) ---
-        
+        Vector3 diagDirection = (transform.forward + (-transform.up)).normalized;
         RaycastHit cornerHit;
 
-        Debug.DrawRay(transform.position, transform.forward * cornerRayLength, Color.red);
-        Debug.DrawRay(transform.position, -transform.up * rayLength, Color.green);
+        Debug.DrawRay(rayOrigin, diagDirection * cornerRayLength, Color.red);
+        Debug.DrawRay(rayOrigin, -transform.up * rayLength, Color.green);
 
         
-        if (Physics.Raycast(transform.position, transform.forward, out cornerHit, cornerRayLength, environmentMask))//if there is a forward hit
+        if (Physics.Raycast(rayOrigin, diagDirection, out cornerHit, cornerRayLength, environmentMask))//if there is a forward hit
         {
             forwardPresence = true;
             // Hit a wall ahead - rotate UPWARD (backward tilt) to climb it
@@ -187,43 +190,21 @@ public class GnomeController : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Vector3 rayOrigin = transform.position + transform.up * rayOriginOffset;
         // Down ray
         Gizmos.color = Color.green;
-        Gizmos.DrawRay(transform.position, -transform.up * rayLength);
+        Gizmos.DrawRay(rayOrigin, -transform.up * rayLength);
 
         // Diagonal ray
         Gizmos.color = Color.red;
-        Gizmos.DrawRay(transform.position, transform.forward * cornerRayLength);
+        Vector3 diagDirection = (transform.forward + (-transform.up)).normalized;
+        Gizmos.DrawRay(rayOrigin, diagDirection * cornerRayLength);
     }
 
 
     
     void GnomeAttack(){
-        // if (!isFlying)
-        // {
-        //     // --- LAUNCH PHASE ---
-        //     launchTimer += Time.deltaTime;
-        //     animator.Play("launch");
 
-        //     if (launchTimer >= launchAnimationLength)
-        //     {
-        //         isFlying = true;
-        //         launchTimer = 0f;
-        //         animator.Play("flying");
-        //     }
-        // }
-        // else
-        // {
-        //     // --- FLYING PHASE ---
-        //     Vector3 toPlayer = (player.transform.position - transform.position).normalized;
-
-        //     // tilt up direction towards player
-        //     Quaternion targetRot = Quaternion.LookRotation(transform.forward, toPlayer);
-        //     transform.rotation = Quaternion.Lerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
-
-        //     // fly in up direction (like a launched projectile)
-        //     transform.position += transform.up * flySpeed * Time.deltaTime;
-        // }
     }
 
     void GnomeRecovery(){

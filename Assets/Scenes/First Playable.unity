@@ -175,11 +175,78 @@ PrefabInstance:
       propertyPath: m_Name
       value: CrystalCube
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+      propertyPath: m_TagString
+      value: environment
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 99679427}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 99679426}
   m_SourcePrefab: {fileID: 100100000, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+--- !u!1 &99679422 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 904123bba4b90744fb2592d06010aa88, type: 3}
+  m_PrefabInstance: {fileID: 99679421}
+  m_PrefabAsset: {fileID: 0}
+--- !u!54 &99679426
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99679422}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!65 &99679427
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99679422}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &169132195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -472,7 +539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
       propertyPath: m_Name
@@ -481,8 +548,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 289156491}
   m_SourcePrefab: {fileID: 100100000, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
+--- !u!1 &289156490 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
+  m_PrefabInstance: {fileID: 289156489}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &289156491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289156490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b7e950ebccaad46b19bbf9b00570da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GnomeSpawner
+  gnome: {fileID: 1986184328}
+  maxGnomes: 50
+  gnomeSpawnProbability: 0.005
+  startWithGnomeSpawned: 1
 --- !u!1 &478307329
 GameObject:
   m_ObjectHideFlags: 0
@@ -522,9 +613,9 @@ MonoBehaviour:
   segmentRadiusFudgeFactor: 1.2
   oreSpawnProbability: 0.05
   gnomeSpawnerProbability: 0.001
-  crystallineComponent: {fileID: 1260133172}
-  oreObject: {fileID: 1078917620}
-  gnomeSpawnerObject: {fileID: 1572056709}
+  crystallineComponent: {fileID: 99679422}
+  oreObject: {fileID: 1392915177}
+  gnomeSpawnerObject: {fileID: 289156490}
 --- !u!4 &478307331
 Transform:
   m_ObjectHideFlags: 0
@@ -792,6 +883,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1986184331}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1986184332}
   m_SourcePrefab: {fileID: 100100000, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
 --- !u!114 &1001131421 stripped
 MonoBehaviour:
@@ -1397,11 +1491,48 @@ PrefabInstance:
       propertyPath: m_Name
       value: MineableCrystal
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06dcdefd5ee91204d9a411b617e8233a, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 06dcdefd5ee91204d9a411b617e8233a, type: 3}
+      propertyPath: m_TagString
+      value: Breakable
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 06dcdefd5ee91204d9a411b617e8233a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1392915181}
   m_SourcePrefab: {fileID: 100100000, guid: 06dcdefd5ee91204d9a411b617e8233a, type: 3}
+--- !u!1 &1392915177 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 06dcdefd5ee91204d9a411b617e8233a, type: 3}
+  m_PrefabInstance: {fileID: 1392915176}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1392915181
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1392915177}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.65040314, y: 0.46974096, z: 0.61570036}
+  m_Center: {x: 0.0017250329, y: 0.23487048, z: -0.010493755}
 --- !u!1 &1550369937 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f619844df81f452419607bd6885c99b8, type: 3}
@@ -1455,7 +1586,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1572056710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1880,6 +2011,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1986184332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1986184328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f71b1b10239735458e7e16b65282d83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GnomeController
+  moveSpeed: 2
+  rotationSpeed: 20
+  glueToSurfaceSpeed: 0.1
+  randomInfluence: 2
+  randomInfluenceProbability: 0.1
+  visualRadius: 60
+  attackRadius: 30
+  idleRadius: 500
+  rayLength: 1.2
+  cornerRayLength: 0.8
+  groundOffset: 0.5
+  environmentMask:
+    serializedVersion: 2
+    m_Bits: 64
+  player: {fileID: 1115444171}
+  playerVisible: 0
+  playerAttackable: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
