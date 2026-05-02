@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GnomeSpawner
   gnome: {fileID: 1986184328}
-  maxGnomes: 100
+  maxGnomes: 500
   gnomeSpawnProbability: 0.01
   startWithGnomeSpawned: 1
 --- !u!1 &478307329
@@ -1020,9 +1020,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1986184332}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1986184334}
   m_SourcePrefab: {fileID: 100100000, guid: 6a627783098a7134aa8b7c440ef9c2d7, type: 3}
 --- !u!114 &1001131421 stripped
 MonoBehaviour:
@@ -2121,11 +2118,11 @@ MonoBehaviour:
   rotationSpeed: 20
   surfaceAlignSpeed: 12
   groundOffset: 0.5
-  visualRadius: 40
-  attackRadius: 30
-  idleRadius: 200
+  visualRadius: 30
+  attackRadius: 20
+  idleRadius: 700
   attackSpeed: 10
-  attackFlyDurationRange: {x: 1, y: 2}
+  attackFlyDurationRange: {x: 0.6, y: 1.5}
   randomTurnInterval: 2
   randomTurnAngle: 60
   probeLength: 1.5
@@ -2141,110 +2138,9 @@ MonoBehaviour:
   recoveryRayCount: 300
   recoveryArrivalDistance: 0.1
   player: {fileID: 1115444172}
-  animator: {fileID: 1986184331}
-  audioSource: {fileID: 1986184334}
-  launchSound: {fileID: 8300000, guid: b6672ed8629727a4e89ac2af95d16785, type: 3}
-  drillSound: {fileID: 8300000, guid: e23bcb0f89d3ca54ba6c9a9a8e7b4de9, type: 3}
-  currentState: 0
+  animator: {fileID: 0}
   playerVisible: 0
   playerAttackable: 0
---- !u!82 &1986184334
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1986184328}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

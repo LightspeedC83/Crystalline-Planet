@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public enum GnomeState
 {
@@ -51,13 +52,19 @@ public class GnomeController : MonoBehaviour
     public Transform player;
     public Animator animator;
 
+    public AudioSource audioSource;
+    public AudioClip launchSound;
+    public AudioClip drillSound;
+    
+    
+
     // Animator parameter names
     const string ANIM_LAUNCH = "Launch";
     const string ANIM_FLY    = "Fly";
     const string ANIM_WALK   = "Walk";
 
     // State
-    public GnomeState currentState { get; private set; }
+    public GnomeState currentState;
     public bool playerVisible;
     public bool playerAttackable;
 
@@ -111,6 +118,10 @@ public class GnomeController : MonoBehaviour
         float d = Vector3.Distance(player.position, transform.position);
         playerVisible = d <= visualRadius;
         playerAttackable = d <= attackRadius;
+
+        if (d < 0.25 && currentState == GnomeState.Attacking){
+            player.GetComponent<PlayerController>().OnDeath();
+        }
     }
 
     void UpdateState()
@@ -247,13 +258,21 @@ public class GnomeController : MonoBehaviour
         grounded = false;
 
         SetAnimTrigger(ANIM_LAUNCH);
+        audioSource.PlayOneShot(launchSound);
+        StartCoroutine(SetReadyAfterDelay(2)); //launch is a 2 second animation clip
     }
 
-    /// <summary>
-    /// Hook this up as an Animation Event at the END of the Launch clip.
-    /// </summary>
-    public void OnAttackWindupComplete()
+    // /// <summary>
+    // /// Hook this up as an Animation Event at the END of the Launch clip.
+    // /// </summary>
+    // public void OnAttackWindupComplete()
+    // {
+    //     windupAnimDone = true;
+    // }
+    
+    private IEnumerator SetReadyAfterDelay(float seconds)
     {
+        yield return new WaitForSeconds(seconds);
         windupAnimDone = true;
     }
 
@@ -275,6 +294,7 @@ public class GnomeController : MonoBehaviour
                 attackFlyEndTime = Time.time + Random.Range(attackFlyDurationRange.x,
                                                             attackFlyDurationRange.y);
                 SetAnimTrigger(ANIM_FLY);
+                audioSource.PlayOneShot(drillSound);
             }
             return;
         }

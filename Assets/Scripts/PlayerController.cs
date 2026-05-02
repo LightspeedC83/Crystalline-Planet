@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public TextMeshProUGUI oreTrackerText;
     private int oreMined;
-    [SerializeField] public int oreToWin = 30;
+    [SerializeField] public int oreToWin = 15;
 
     public float verticalVelocity;
     public Vector3 characterVelocity;
@@ -236,6 +236,11 @@ public class PlayerController : MonoBehaviour
             mineTimer = 0;
             oreMined++;
             oreTrackerText.SetText("Ore: " + oreMined + "/" + oreToWin);
+            
+            if (oreMined >= oreToWin){
+                SceneManager.LoadScene("WinScene");
+            }
+
         }
     }
 
@@ -267,4 +272,6 @@ public class PlayerController : MonoBehaviour
 
         SceneManager.LoadScene(gameOverScene);
     }
+    
+        
 }
