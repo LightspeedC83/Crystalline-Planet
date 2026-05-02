@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     private State activeState; // The current state
 
     public Vector3 respawnPoint;
-    private int gameOverScene = 1;
+    private int gameOverScene = 2;
 
     [Header("Controller Parameters")] [SerializeField]
     public float movementSpeed = 10f;

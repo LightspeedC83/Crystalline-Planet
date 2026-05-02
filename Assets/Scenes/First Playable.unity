@@ -507,7 +507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 852e7001488e99c43800be3d85a37f2b, type: 3}
       propertyPath: m_Name
@@ -539,7 +539,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GnomeSpawner
   gnome: {fileID: 1986184328}
-  maxGnomes: 100
+  maxGnomes: 200
   gnomeSpawnProbability: 0.01
   startWithGnomeSpawned: 1
 --- !u!1 &478307329
@@ -579,8 +579,8 @@ MonoBehaviour:
   scaleFactor: 5
   finalNumberMapSegements: 5
   segmentRadiusFudgeFactor: 1.2
-  oreSpawnProbability: 0.05
-  gnomeSpawnerProbability: 0.001
+  oreSpawnProbability: 0.025
+  gnomeSpawnerProbability: 0.005
   crystallineComponent: {fileID: 99679422}
   oreObject: {fileID: 1392915177}
   gnomeSpawnerObject: {fileID: 289156490}
@@ -2121,11 +2121,11 @@ MonoBehaviour:
   rotationSpeed: 20
   surfaceAlignSpeed: 12
   groundOffset: 0.5
-  visualRadius: 40
+  visualRadius: 70
   attackRadius: 30
-  idleRadius: 200
+  idleRadius: 100
   attackSpeed: 10
-  attackFlyDurationRange: {x: 1, y: 2}
+  attackFlyDurationRange: {x: 1.5, y: 4}
   randomTurnInterval: 2
   randomTurnAngle: 60
   probeLength: 1.5
@@ -2135,7 +2135,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   gravity: 9.81
-  recoveryProbeLength: 200
+  recoveryProbeLength: 50
   recoveryFlySpeed: 15
   recoveryAlignSpeed: 6
   recoveryRayCount: 300
@@ -2144,10 +2144,12 @@ MonoBehaviour:
   animator: {fileID: 1986184331}
   audioSource: {fileID: 1986184334}
   launchSound: {fileID: 8300000, guid: b6672ed8629727a4e89ac2af95d16785, type: 3}
-  drillSound: {fileID: 8300000, guid: e23bcb0f89d3ca54ba6c9a9a8e7b4de9, type: 3}
+  drillSound: {fileID: 8300000, guid: af2991044c716b84e83e775556d92e0d, type: 3}
   currentState: 0
   playerVisible: 0
   playerAttackable: 0
+  stuckThreshold: 0.1
+  stuckTimeLimit: 2
 --- !u!82 &1986184334
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2161,7 +2163,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.322
   m_Pitch: 1
   Loop: 0
   Mute: 0

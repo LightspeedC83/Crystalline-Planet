@@ -30,7 +30,7 @@ public class GnomeController : MonoBehaviour
     public float attackRadius = 30f;
     public float idleRadius = 100f;
     public float attackSpeed = 20f;
-    public Vector2 attackFlyDurationRange = new Vector2(0.6f, 1.5f);
+    public Vector2 attackOvershootRange = new Vector2(5f, 10f);
     public float randomTurnInterval = 2f;
     public float randomTurnAngle = 60f;
 
@@ -86,12 +86,20 @@ public class GnomeController : MonoBehaviour
     private Vector3 recoveryTargetPoint;
     private Vector3 recoveryTargetNormal;
 
+    // Stuck detection
+    private Vector3 stuckCheckPosition;
+    private float   stuckCheckTime;
+    public  float   stuckThreshold = 0.1f;   // how far it must move to count as "not stuck"
+    public  float   stuckTimeLimit = 2f;
+
     void Start()
     {
         if (animator == null) animator = GetComponentInChildren<Animator>();
         heading = transform.forward;
         currentNormal = transform.up;
         currentState = GnomeState.Walking;
+        stuckCheckPosition = transform.position;
+        stuckCheckTime = Time.time;
         SetAnimTrigger(ANIM_WALK);
         gnomeCount++;
     }
@@ -155,6 +163,19 @@ public class GnomeController : MonoBehaviour
 
     void TickWalking()
     {
+         // --- Stuck detection ---
+        if (Vector3.Distance(transform.position, stuckCheckPosition) > stuckThreshold)
+        {
+            stuckCheckPosition = transform.position;
+            stuckCheckTime = Time.time;
+        }
+        else if (Time.time - stuckCheckTime > stuckTimeLimit)
+        {
+            BeginRecovery();
+            return;
+        }
+        // --- end stuck detection ---
+        
         ChooseHeading();
         StepAlongSurface();
         ApplyRotation();
@@ -291,8 +312,14 @@ public class GnomeController : MonoBehaviour
             if (windupAnimDone)
             {
                 attackPhase = AttackPhase.Flying;
-                attackFlyEndTime = Time.time + Random.Range(attackFlyDurationRange.x,
-                                                            attackFlyDurationRange.y);
+                attackDirection = (player.position - transform.position).normalized;
+                // Fly the full distance to the player + a random overshoot.
+                float distance = (player != null)
+                    ? Vector3.Distance(transform.position, player.position)
+                    : 0f;
+                float overshoot = Random.Range(attackOvershootRange.x, attackOvershootRange.y);
+                attackFlyEndTime = Time.time + (distance + overshoot) / Mathf.Max(attackSpeed, 0.001f);
+
                 SetAnimTrigger(ANIM_FLY);
                 audioSource.PlayOneShot(drillSound);
             }
@@ -310,20 +337,14 @@ public class GnomeController : MonoBehaviour
                 rotationSpeed * Time.deltaTime);
         }
 
-        // Hit something? Stick and walk.
+        // Hit something? Destroy it and keep flying.
         if (Physics.SphereCast(transform.position, probeRadius, attackDirection,
-                               out RaycastHit hit, attackSpeed * Time.deltaTime + 0.1f,
-                               environmentMask))
+                            out RaycastHit hit, attackSpeed * Time.deltaTime + 0.1f,
+                            environmentMask))
         {
-            currentNormal = hit.normal;
-            transform.position = hit.point + currentNormal * groundOffset;
-            heading = Vector3.ProjectOnPlane(transform.forward, currentNormal).normalized;
-            if (heading.sqrMagnitude < 0.0001f)
-                heading = Vector3.Cross(currentNormal, Vector3.right).normalized;
-            grounded = true;
-            currentState = GnomeState.Walking;
-            SetAnimTrigger(ANIM_WALK);
-            return;
+            Destroy(hit.collider.gameObject);
+            // Nudge past the destroyed block so we don't re-hit its collider this frame.
+            transform.position = hit.point + attackDirection * probeRadius;
         }
 
         // Time out → recovery.
@@ -417,6 +438,8 @@ public class GnomeController : MonoBehaviour
             heading = fwd;
             grounded = true;
             currentState = GnomeState.Walking;
+            stuckCheckPosition = transform.position;
+            stuckCheckTime = Time.time;
             SetAnimTrigger(ANIM_WALK);
         }
     }
